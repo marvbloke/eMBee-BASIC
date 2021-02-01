@@ -1,4 +1,4 @@
-eMBee Basic
+eMBee BASIC
 ===========
 Now you can turn an Altoids tin and an Arduino into an 80's pocket computer!
 
