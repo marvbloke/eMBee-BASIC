@@ -97,3 +97,8 @@ MID$(string,start,n)
 PINREAD(pin) - see Arduino digitalRead()
 ANALOGRD(pin) - see Arduino analogRead()
 ```
+
+Still to come
+```
+CHR$ (converting ASCII numbers to characters)
+BEEP (to drive the buzzer on pin 5)
