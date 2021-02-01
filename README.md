@@ -10,7 +10,7 @@ Prerequisites
 -------------
 1: An Arduino with at least 2k of RAM. i.e. Nano/UNO/Duemilanove/etc. It should also work on the MEGA but is untested. I think the sketch is too big for the Leonardo, since it looks like the bootloader uses more RAM on this model.
 
-2: A CardKB keyboard
+2: A [CardKB keyboard](https://www.okdo.com/p/cardkb-mini-keyboard-unit-mega328p/?cm_mmc=UK-PLA-DS3A-_-google&&campaignid=11705773582&adgroupid=116689368627&network=g&device=m&product_partition_id=983775196933&product_id=2027611-gb&gclid=CjwKCAiAt9z-BRBCEiwA_bWv-H259FRGtjNEjpWTQtWl0V5uXgjzWPzhluYvt18KG0IBjgX63514HBoCl2YQAvD_BwE&gclsrc=aw.ds) 
 
 3: An SSD1306 based OLED Screen connected using SPI. See e.g. http://www.adafruit.com/product/938. I think it should also work fine with the 128x32 version - you'll just need to change a couple of defines.
 
