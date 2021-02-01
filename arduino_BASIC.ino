@@ -1,9 +1,9 @@
 #include <font.h>
 #include <SSD1306ASCII.h>
 // ^ - modified for faster SPI
-#include <PS2Keyboard.h>
+//#include <PS2Keyboard.h>
 #include <EEPROM.h>
-
+#include <Wire.h>
 #include "basic.h"
 #include "host.h"
 
@@ -22,9 +22,9 @@ TwiMaster rtc(true);
 #endif
 
 // Keyboard
-const int DataPin = 8;
-const int IRQpin =  3;
-PS2Keyboard keyboard;
+//const int DataPin = 8;
+//const int IRQpin =  3;
+//PS2Keyboard keyboard;
 
 // OLED
 #define OLED_DATA 9
@@ -33,6 +33,12 @@ PS2Keyboard keyboard;
 #define OLED_CS 12
 #define OLED_RST 13
 SSD1306ASCII oled(OLED_DATA, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
+
+// CardKB keyboard
+#define CARDKB_ADDR 0x5F
+#define CARDKB_DELETE 0x08
+#define CARDKB_ENTER 0x0D
+#define CARDKB_ESC 0x1B
 
 // NB Keyboard needs a seperate ground from the OLED
 
@@ -44,13 +50,14 @@ unsigned char mem[MEMORY_SIZE];
 #define TOKEN_BUF_SIZE    64
 unsigned char tokenBuf[TOKEN_BUF_SIZE];
 
-const char welcomeStr[] PROGMEM = "Arduino BASIC";
+const char welcomeStr[] PROGMEM = "eMBee BASIC";
 char autorun = 0;
 
 void setup() {
-    keyboard.begin(DataPin, IRQpin);
+    //keyboard.begin(DataPin, IRQpin);
     oled.ssd1306_init(SSD1306_SWITCHCAPVCC);
-
+    //Serial.begin(115200);     // debug
+    Wire.begin();
     reset();
     host_init(BUZZER_PIN);
     host_cls();
@@ -106,4 +113,3 @@ void loop() {
         host_outputProgMemString((char *)pgm_read_word(&(errorTable[ret])));
     }
 }
-

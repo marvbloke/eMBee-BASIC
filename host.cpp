@@ -2,11 +2,18 @@
 #include "basic.h"
 
 #include <SSD1306ASCII.h>
-#include <PS2Keyboard.h>
+//#include <PS2Keyboard.h>
+#include <Wire.h>     // used for CardKB
 #include <EEPROM.h>
 
+// CardKB keyboard
+#define CARDKB_ADDR 0x5F
+#define CARDKB_DELETE 0x08
+#define CARDKB_ENTER 0x0D
+#define CARDKB_ESC 0x1B
+
 extern SSD1306ASCII oled;
-extern PS2Keyboard keyboard;
+//extern PS2Keyboard keyboard;
 extern EEPROMClass EEPROM;
 int timer1_counter;
 
@@ -231,16 +238,18 @@ char *host_readLine() {
 
     bool done = false;
     while (!done) {
-        while (keyboard.available()) {
-            host_click();
+        Wire.requestFrom(CARDKB_ADDR, 1);
+        while (Wire.available()) {          // while (keyboard.available())
+            //host_click();
+            Serial.println("Input detected");  // debug
             // read the next key
             lineDirty[pos / SCREEN_WIDTH] = 1;
-            char c = keyboard.read();
+            char c = Wire.read();    //char c = keyboard.read();
             if (c>=32 && c<=126)
                 screenBuffer[pos++] = c;
-            else if (c==PS2_DELETE && pos > startPos)
+            else if (c==CARDKB_DELETE && pos > startPos)
                 screenBuffer[--pos] = 0;
-            else if (c==PS2_ENTER)
+            else if (c==CARDKB_ENTER)
                 done = true;
             curX = pos % SCREEN_WIDTH;
             curY = pos / SCREEN_WIDTH;
@@ -280,10 +289,11 @@ char host_getKey() {
 }
 
 bool host_ESCPressed() {
-    while (keyboard.available()) {
+    Wire.requestFrom(CARDKB_ADDR, 1);
+    while (Wire.available()) {      // while (keyboard.available())
         // read the next key
-        inkeyChar = keyboard.read();
-        if (inkeyChar == PS2_ESC)
+        inkeyChar = Wire.read();
+        if (inkeyChar == CARDKB_ESC)
             return true;
     }
     return false;
@@ -431,4 +441,3 @@ bool host_saveExtEEPROM(char *fileName) {
 }
 
 #endif
-
