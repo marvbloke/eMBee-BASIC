@@ -1,6 +1,6 @@
 eMBee BASIC
 ===========
-Now you can turn an Altoids tin and an Arduino into an 80's pocket computer! More info on the *eMBee ONE* pocket computer at the project's home on Hackaday.io: https://hackaday.io/project/177180-embee-one-pocket-computer
+Now you can turn an Altoids tin and an Arduino into an 80's pocket computer! More info on the **eMBee ONE** pocket computer at the project's home on Hackaday.io: https://hackaday.io/project/177180-embee-one-pocket-computer
 
 Based on Robin Edwards' excellent [Arduino BASIC](https://github.com/robinhedwards/ArduinoBASIC), this is the software for a complete pocket computer, using an Arduino Nano (or clone), a CardKB I2C keyboard, and SPI OLED screen. The BASIC supports almost all the usual features, with float and string variables, multi-dimensional arrays, FOR-NEXT, GOSUB-RETURN, etc. Saving and Loading from internal and external EEPROM is supported, as well as auto-running a program on power-up. You can also read and write from the analog and digital pins.
 
