@@ -241,7 +241,7 @@ char *host_readLine() {
         Wire.requestFrom(CARDKB_ADDR, 1);
         while (Wire.available()) {          // while (keyboard.available())
             //host_click();
-            Serial.println("Input detected");  // debug
+            //Serial.println("Input detected");  // debug
             // read the next key
             lineDirty[pos / SCREEN_WIDTH] = 1;
             char c = Wire.read();    //char c = keyboard.read();
