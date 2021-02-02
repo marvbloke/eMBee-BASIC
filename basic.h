@@ -105,7 +105,7 @@
 #define MAX_IDENT_LEN	8
 #define MAX_NUMBER_LEN	10
 
-#define MEMORY_SIZE	807  // originally 1024
+#define MEMORY_SIZE	1024  // originally 1024
 extern unsigned char mem[];
 extern int sysPROGEND;
 extern int sysSTACKSTART;
