@@ -24,7 +24,7 @@
  *  - functions like LEN, require brackets e.g. LEN(a$)
  *  - String manipulation functions are LEFT$, MID$, RIGHT$
  *  - RND is a nonary operator not a function i.e. RND not RND()
- *  - PRINT AT x,y ... is replaced by POSITION x,y : PRINT ...
+ *  - PRINT AT x,y ... is replaced by POS x,y : PRINT ...
  *  - LIST takes an optional start and end e.g. LIST 1,100 or LIST 50
  *  - INKEY$ reads the last key pressed from the keyboard, or an empty string
  *     if no key pressed. The (single key) buffer is emptied after the call.
@@ -130,7 +130,7 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"STEP",TKN_FMT_PRE|TKN_FMT_POST}, {"NEXT", TKN_FMT_POST}, {"MOD",TKN_FMT_PRE|TKN_FMT_POST}, {"NEW",TKN_FMT_POST},
     {"GOSUB",TKN_FMT_POST}, {"RETURN",TKN_FMT_POST}, {"DIM", TKN_FMT_POST}, {"LEFT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR},
     {"RIGHT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"MID$",3|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"CLS",TKN_FMT_POST}, {"PAUSE",TKN_FMT_POST},
-    {"POSITION", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
+    {"POS", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
     {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}
 };
@@ -1491,7 +1491,7 @@ int parse_PRINT() {
 }
 
 // parse a stmt that takes two int parameters 
-// e.g. POSITION 3,2
+// e.g. POS 3,2
 int parseTwoIntCmd() {
     int op = curToken;
     getNextToken();
@@ -1981,4 +1981,3 @@ void reset() {
     stopStmtNumber = 0;
     lineNumber = 0;
 }
-
