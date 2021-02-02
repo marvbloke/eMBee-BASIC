@@ -403,14 +403,15 @@ bool host_removeExtEEPROM(char *fileName) {
 }
 
 bool host_loadExtEEPROM(char *fileName) {
-    unsigned int addr = getExtEEPROMAddr(fileName);
-    if (addr == EXTERNAL_EEPROM_SIZE) return false;
+    unsigned int addr = getExtEEPROMAddr(fileName);      
+    if (addr == EXTERNAL_EEPROM_SIZE) return false;  
     // skip filename
     addr += 2;
     while (readExtEEPROM(addr++)) ;
     sysPROGEND = readExtEEPROM(addr) | (readExtEEPROM(addr+1) << 8);
     for (int i=0; i<sysPROGEND; i++)
         mem[i] = readExtEEPROM(addr+2+i);
+    return true;
 }
 
 bool host_saveExtEEPROM(char *fileName) {
