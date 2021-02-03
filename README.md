@@ -71,7 +71,7 @@ RETURN
 DIM variable(n1,n2...)
 CLS
 PAUSE milliseconds
-POSITION x,y sets the cursor
+POS x,y sets the cursor
 PIN pinNum, value (0 = low, non-zero = high)
 PINMODE pinNum, mode ( 0 = input, 1 = output)
 LOAD (from internal EEPROM)
