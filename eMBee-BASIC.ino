@@ -56,6 +56,8 @@ char autorun = 0;
 void setup() {
     //keyboard.begin(DataPin, IRQpin);
     oled.ssd1306_init(SSD1306_SWITCHCAPVCC);
+    //if (invert) oled.ssd1306_command(0xA7);
+    //  else oled.ssd1306_command(0xA6);
     //Serial.begin(115200);     // debug
     Wire.begin();
     reset();
