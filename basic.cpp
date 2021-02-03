@@ -36,12 +36,17 @@
  *  - PINMODE <pin>, <mode> - sets the pin mode (0=input, 1=output, 2=pullup)
  *  - PIN <pin>, <state> - sets the pin high (non zero) or low (zero)
  *  - PINREAD(pin) returns pin value, ANALOGRD(pin) for analog pins
+ *  
+ *  Modified by Matthew Begg
+ *  - ABS
+ *  
  * ---------------------------------------------------------------------------
  */
 
 // TODO
-// ABS, SIN, COS, EXP etc
+// SIN, COS, EXP etc
 // DATA, READ, RESTORE
+// BEEP
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -132,7 +137,7 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"RIGHT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"MID$",3|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"CLS",TKN_FMT_POST}, {"PAUSE",TKN_FMT_POST},
     {"POS", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
-    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}
+    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"ABS",1}
 };
 
 
@@ -1034,6 +1039,13 @@ int parseFnCallExpr() {
         case TOKEN_INT:
             stackPushNum((float)floor(stackPopNum()));
             break;
+        case TOKEN_ABS:
+            // code for ABS function goes here
+            float ftmp;
+            ftmp=stackPopNum();
+            if (ftmp<0) ftmp=ftmp*-1;
+            stackPushNum(ftmp);
+            break;
         case TOKEN_STR:
             {
                 char buf[16];
@@ -1242,7 +1254,8 @@ int parsePrimary() {
         return parseUnaryNumExp();
 
         // functions
-    case TOKEN_INT: 
+    case TOKEN_INT:
+    case TOKEN_ABS: 
     case TOKEN_STR: 
     case TOKEN_LEN: 
     case TOKEN_VAL:

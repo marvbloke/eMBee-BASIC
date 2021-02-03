@@ -67,9 +67,10 @@
 #define TOKEN_ANALOGRD          63
 #define TOKEN_DIR               64
 #define TOKEN_DELETE            65
+#define TOKEN_ABS               66
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 65
+#define LAST_IDENT_TOKEN 66
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22
