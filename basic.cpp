@@ -1044,7 +1044,7 @@ int parseFnCallExpr() {
             float ftmp;
             ftmp=stackPopNum();
             if (ftmp<0) ftmp=ftmp*-1;
-            stackPushNum(ftmp);
+            stackPushNum((float)ftmp);
             break;
         case TOKEN_STR:
             {
