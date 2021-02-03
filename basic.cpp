@@ -1041,8 +1041,7 @@ int parseFnCallExpr() {
             break;
         case TOKEN_ABS:
             // code for ABS function goes here
-            float ftmp;
-            ftmp=stackPopNum();
+            float ftmp = (float)stackPopNum();
             if (ftmp<0) ftmp=ftmp*-1;
             stackPushNum((float)ftmp);
             break;
