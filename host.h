@@ -18,7 +18,6 @@ void host_pinMode(int pin, int mode);
 void host_click();
 void host_startupTone();
 void host_cls();
-void host_invertVideo(bool inv);
 void host_showBuffer();
 void host_moveCursor(int x, int y);
 void host_outputString(char *str);

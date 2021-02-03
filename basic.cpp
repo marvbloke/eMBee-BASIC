@@ -39,7 +39,6 @@
  *  
  *  Modified by Matthew Begg
  *  - ABS
- *  - INVERSE swaps black/white to white/black and vice versa
  *  
  * ---------------------------------------------------------------------------
  */
@@ -66,8 +65,6 @@ int sysPROGEND;
 int sysSTACKSTART, sysSTACKEND;
 int sysVARSTART, sysVAREND;
 int sysGOSUBSTART, sysGOSUBEND;
-
-bool inverse=false;  // false = white text on black background, true = black text on white background
 
 const char string_0[] PROGMEM = "OK";
 const char string_1[] PROGMEM = "Bad number";
@@ -140,7 +137,7 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"RIGHT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"MID$",3|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"CLS",TKN_FMT_POST}, {"PAUSE",TKN_FMT_POST},
     {"POS", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
-    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"ABS",1}, {"INVERSE",TKN_FMT_POST}
+    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"ABS",1}
 };
 
 
@@ -1782,10 +1779,6 @@ int parseSimpleCmd() {
                 host_cls();
                 host_showBuffer();
                 break;
-            case TOKEN_INVERSE:
-                inverse=!inverse;
-                host_invertVideo(inverse);
-                break;
             case TOKEN_DIR:
 #if EXTERNAL_EEPROM
                 host_directoryExtEEPROM();
@@ -1854,7 +1847,6 @@ int parseStmts()
             break;
             
         case TOKEN_NEW:
-        case TOKEN_INVERSE:
         case TOKEN_STOP:
         case TOKEN_CONT:
         case TOKEN_RETURN:

@@ -94,11 +94,6 @@ void host_startupTone() {
     }    
 }
 
-void host_invertVideo(bool inv) {
-  if (inv) oled.ssd1306_command(0xA7);
-    else oled.ssd1306_command(0xA6);
-}
-
 void host_cls() {
     memset(screenBuffer, 32, SCREEN_WIDTH*SCREEN_HEIGHT);
     memset(lineDirty, 1, SCREEN_HEIGHT);
