@@ -100,7 +100,6 @@ ANALOGRD(pin) - see Arduino analogRead()
 
 Still to come
 ```
-Shorten POSITION command to POS
 ABS(number) e.g. ABS(-6)-> 6CHR$ (converting ASCII numbers to characters)
 BEEP (to drive the buzzer on pin 5)
 User defined graphics - altering the built in characters for rudimentary text-based graphics
