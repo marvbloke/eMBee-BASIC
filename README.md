@@ -2,7 +2,7 @@ eMBee BASIC
 ===========
 Now you can turn an Altoids tin and an Arduino into an 80's pocket computer! More info on the **eMBee ONE** pocket computer at the project's home on Hackaday.io: https://hackaday.io/project/177180-embee-one-pocket-computer
 
-Based on Robin Edwards' excellent [Arduino BASIC](https://github.com/robinhedwards/ArduinoBASIC), this is the software for a complete pocket computer, using an Arduino Nano (or clone), a CardKB I2C keyboard, and SPI OLED screen. The BASIC supports almost all the usual features, with float and string variables, multi-dimensional arrays, FOR-NEXT, GOSUB-RETURN, etc. Saving and Loading from internal and external EEPROM is supported, as well as auto-running a program on power-up. You can also read and write from the analog and digital pins.
+Based on Robin Edwards' excellent [Arduino BASIC](https://github.com/robinhedwards/ArduinoBASIC), this is the software for a complete pocket computer, using an Arduino Nano (or clone), a CardKB I2C keyboard, and SPI OLED screen. The BASIC supports almost all the usual features, with float and string variables, multi-dimensional arrays, FOR-NEXT, GOSUB-RETURN, etc. Saving and loading from internal and external EEPROM is supported, as well as auto-running a program on power-up. You can also read and write from the analog and digital pins.
 
 There's about 1k of RAM available for your BASIC programs and variables, so its roughly equivalent to a Sinclair ZX81. The other 1k of RAM (on a Nano) is used for the keyboard and screen buffers, with a small bit of room left for the CPU stack. That works out quite well, since there's a 1k EEPROM on the Nano so if your program fits in the basic environment, it will fit when saved to EEPROM!
 
@@ -14,7 +14,7 @@ Prerequisites
 
 3: An SSD1306 based OLED Screen connected using SPI. See e.g. http://www.adafruit.com/product/938. I think it should also work fine with the 128x32 version - you'll just need to change a couple of defines.
 
-4: An Altoids tin and some mini breadboards to make it a truly portable device. I used an Adafruit PowerBoost 500 Basic to connect the Nano to 2 x AAA batteries for power.
+4: An Altoids tin to make it a truly portable device. I used an Adafruit PowerBoost 500 Basic to connect the Nano to 2 x AAA batteries for power.
 
 5: (Optional) A Piezoelectric buzzer for keyboard clicks and other sounds.
 
