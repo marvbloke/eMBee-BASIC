@@ -90,7 +90,6 @@ Functions
 LEN(string) e.g. PRINT LEN("Hello") -> 5
 VAL(string) e.g. PRINT VAL("1+2")
 INT(number) e.g. INT(1.5)-> 1
-ABS(number) e.g. ABS(-6)-> 6
 STR$(number) e.g. STR$(2) -> "2"
 LEFT$(string,n)
 RIGHT$(string,n)
@@ -101,6 +100,7 @@ ANALOGRD(pin) - see Arduino analogRead()
 
 Still to come
 ```
-CHR$ (converting ASCII numbers to characters)
+Shorten POSITION command to POS
+ABS(number) e.g. ABS(-6)-> 6CHR$ (converting ASCII numbers to characters)
 BEEP (to drive the buzzer on pin 5)
 User defined graphics - altering the built in characters for rudimentary text-based graphics
