@@ -1,7 +1,6 @@
 #include <font.h>
 #include <SSD1306ASCII.h>
 // ^ - modified for faster SPI
-//#include <PS2Keyboard.h>
 #include <EEPROM.h>
 #include <Wire.h>
 #include "basic.h"
@@ -21,11 +20,6 @@
 TwiMaster rtc(true);
 #endif
 
-// Keyboard
-//const int DataPin = 8;
-//const int IRQpin =  3;
-//PS2Keyboard keyboard;
-
 // OLED
 #define OLED_DATA 9
 #define OLED_CLK 10
@@ -40,8 +34,6 @@ SSD1306ASCII oled(OLED_DATA, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
 #define CARDKB_ENTER 0x0D
 #define CARDKB_ESC 0x1B
 
-// NB Keyboard needs a seperate ground from the OLED
-
 // buzzer pin, 0 = disabled/not present
 #define BUZZER_PIN    5
 
@@ -54,9 +46,7 @@ const char welcomeStr[] PROGMEM = "eMBee BASIC";
 char autorun = 0;
 
 void setup() {
-    //keyboard.begin(DataPin, IRQpin);
     oled.ssd1306_init(SSD1306_SWITCHCAPVCC);
-    //Serial.begin(115200);     // debug
     Wire.begin();
     reset();
     host_init(BUZZER_PIN);

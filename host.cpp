@@ -2,7 +2,6 @@
 #include "basic.h"
 
 #include <SSD1306ASCII.h>
-//#include <PS2Keyboard.h>
 #include <Wire.h>     // used for CardKB
 #include <EEPROM.h>
 
@@ -13,7 +12,6 @@
 #define CARDKB_ESC 0x1B
 
 extern SSD1306ASCII oled;
-//extern PS2Keyboard keyboard;
 extern EEPROMClass EEPROM;
 int timer1_counter;
 
@@ -239,12 +237,11 @@ char *host_readLine() {
     bool done = false;
     while (!done) {
         Wire.requestFrom(CARDKB_ADDR, 1);
-        while (Wire.available()) {          // while (keyboard.available())
-            //host_click();
-            //Serial.println("Input detected");  // debug
+        while (Wire.available()) {
+            //host_click();         // keyboard click disabled
             // read the next key
             lineDirty[pos / SCREEN_WIDTH] = 1;
-            char c = Wire.read();    //char c = keyboard.read();
+            char c = Wire.read();
             if (c>=32 && c<=126)
                 screenBuffer[pos++] = c;
             else if (c==CARDKB_DELETE && pos > startPos)
@@ -290,7 +287,7 @@ char host_getKey() {
 
 bool host_ESCPressed() {
     Wire.requestFrom(CARDKB_ADDR, 1);
-    while (Wire.available()) {      // while (keyboard.available())
+    while (Wire.available()) {
         // read the next key
         inkeyChar = Wire.read();
         if (inkeyChar == CARDKB_ESC)
