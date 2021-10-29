@@ -36,6 +36,9 @@
  *  - PINMODE <pin>, <mode> - sets the pin mode (0=input, 1=output, 2=pullup)
  *  - PIN <pin>, <state> - sets the pin high (non zero) or low (zero)
  *  - PINREAD(pin) returns pin value, ANALOGRD(pin) for analog pins
+ *  
+ *  Added by Matthew Begg
+ *   - BEEP length,tone
  * ---------------------------------------------------------------------------
  */
 
@@ -132,7 +135,7 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"RIGHT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"MID$",3|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"CLS",TKN_FMT_POST}, {"PAUSE",TKN_FMT_POST},
     {"POS", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
-    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}
+    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}
 };
 
 
@@ -1509,6 +1512,9 @@ int parseTwoIntCmd() {
         case TOKEN_POSITION: 
             host_moveCursor(first,second); 
             break;
+        case TOKEN_BEEP:
+            host_beep(first,second);
+            break;
         case TOKEN_PIN: 
             host_digitalWrite(first,second); 
             break;
@@ -1829,6 +1835,7 @@ int parseStmts()
             break;
         
         case TOKEN_POSITION:
+        case TOKEN_BEEP:
         case TOKEN_PIN:
         case TOKEN_PINMODE:
             ret = parseTwoIntCmd(); 

@@ -81,6 +81,16 @@ void host_click() {
     digitalWrite(buzPin, LOW);
 }
 
+void host_beep(int beepLength, int beepTone) {
+    if (!buzPin) return;
+    for (int i=1; i<=beepTone; i++) {
+        digitalWrite(buzPin, HIGH);
+        delay(beepLength);
+        digitalWrite(buzPin, LOW);
+        delay(beepLength);      
+    }
+}
+
 void host_startupTone() {
     if (!buzPin) return;
     for (int i=1; i<=2; i++) {
@@ -277,6 +287,7 @@ char *host_readLine() {
     // remove the cursor
     lineDirty[curY] = 1;
     host_showBuffer();
+    //host_click();       // click at the end of a line
     return &screenBuffer[startPos];
 }
 
