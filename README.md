@@ -24,9 +24,11 @@ Getting Started
 ---------------
 1: Download the zip file, unpack and copy the *folder* to your arduino sketches directory.
 
-2: Install the SSD1306ASCII library (updated by Robin Edwards for speed)
+2: Go to Manage Libraries, search for 'Digital Infrared Temperature Sensor MLX90615' and install it (in order to get 'I2CMaster')
 
-3: Check your wiring corresponds to the pins in the comments/defines at the top of the eMBee_BASIC file.
+3: Install the SSD1306ASCII library (updated by Robin Edwards for speed - included in package)
+
+4: Check your wiring corresponds to the pins in the comments/defines at the top of the eMBee_BASIC file.
 
 BASIC Language
 --------------
