@@ -105,4 +105,4 @@ ANALOGRD(pin) - see Arduino analogRead()
 Still to come
 ```
 CHR$ (converting ASCII numbers to characters)
-User defined graphics - altering the built in characters for rudimentary text-based graphics
+CODE (converting characters to ASCII numbers)
