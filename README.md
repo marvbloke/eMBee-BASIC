@@ -9,15 +9,10 @@ There's about 1k of RAM available for your BASIC programs and variables, so its 
 Prerequisites
 -------------
 1: An ATMega328P or Arduino with at least 2k of RAM. i.e. Nano/UNO/Duemilanove/etc. 
-
 2: A [CardKB keyboard](https://www.okdo.com/p/cardkb-mini-keyboard-unit-mega328p/?cm_mmc=UK-PLA-DS3A-_-google&&campaignid=11705773582&adgroupid=116689368627&network=g&device=m&product_partition_id=983775196933&product_id=2027611-gb&gclid=CjwKCAiAt9z-BRBCEiwA_bWv-H259FRGtjNEjpWTQtWl0V5uXgjzWPzhluYvt18KG0IBjgX63514HBoCl2YQAvD_BwE&gclsrc=aw.ds) 
-
 3: An SSD1306 based OLED screen connected using SPI. Runs at 128x64 resolution in text mode.
-
-4: An Altoids tin to make it a truly portable device. I used an Adafruit PowerBoost 500 Basic to connect the Nano to 2 x AAA batteries for power.
-
+4: An Altoids tin to make it a truly portable device. I use a PP3 9-volt battery connected to the ATMega328P via an LM7805 regulator.
 5: (Optional) A Piezoelectric buzzer for keyboard clicks and other sounds.
-
 6: (Optional) A external EEPROM (e.g. 24LC256 giving 32KB storage) lets you save more than one file. 
 
 Getting Started
@@ -55,7 +50,7 @@ Only the addition operator is supported on strings (plus the functions below).
 Commands
 ```
 PRINT <expr>;<expr>... e.g. PRINT "A=";a
-LET variable = <expr> e.g. LET A$="Hello".
+LET variable = <expr> e.g. LET A$="Hello"
 variable = <expr> e.g. A=5
 LIST [start],[end] e.g. LIST or LIST 10,100
 RUN [lineNumber]
@@ -65,19 +60,20 @@ STOP
 CONT (continue from a STOP)
 INPUT variable e.g. INPUT a$ or INPUT a(5,3)
 IF <expr> THEN cmd e.g. IF a>10 THEN a = 0: GOTO 20
-FOR variable = start TO end STEP step
+FOR variable = start TO end STEP step e.g. FOR n=1 TO 10: PRINT n: NEXT n
 NEXT variable
 NEW
 GOSUB lineNumber
 RETURN
 DIM variable(n1,n2...)
 CLS
+BEEP [pitch],[duration] (pitch is 1=high, 2=mid, 3=low, duration varies depending on pitch e.g. BEEP 1,100 is a short high beep) 
 PAUSE milliseconds
-POS x,y sets the cursor
+AT y,x sets the cursor (this is a separate command rather than PRINT AT). Starts at 0,0 in top-left and goes to 7,20
 PIN pinNum, value (0 = low, non-zero = high)
 PINMODE pinNum, mode ( 0 = input, 1 = output)
 LOAD (from internal EEPROM)
-SAVE (to internal EEPROM) e.g. use SAVE + to set auto-run on boot flag
+SAVE (to internal EEPROM) e.g. use SAVE + to set to auto-run
 LOAD "filename", SAVE "filename, DIR, DELETE "filename" if using with external EEPROM.
 ```
 
@@ -103,6 +99,5 @@ ANALOGRD(pin) - see Arduino analogRead()
 Still to come
 ```
 ABS(number) e.g. ABS(-6)-> 6
-BEEP (to drive the buzzer on pin 5)
 CHR$ (converting ASCII numbers to characters)
 User defined graphics - altering the built in characters for rudimentary text-based graphics
