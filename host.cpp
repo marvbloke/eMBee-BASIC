@@ -81,13 +81,13 @@ void host_click() {
     digitalWrite(buzPin, LOW);
 }
 
-void host_beep(int beepLength, int beepTone) {
+void host_beep(int beepPitch, int beepLength) {
     if (!buzPin) return;
-    for (int i=1; i<=beepTone; i++) {
+    for (int i=1; i<=beepLength; i++) {
         digitalWrite(buzPin, HIGH);
-        delay(beepLength);
+        delay(beepPitch);
         digitalWrite(buzPin, LOW);
-        delay(beepLength);      
+        delay(beepPitch);      
     }
 }
 
@@ -111,7 +111,7 @@ void host_cls() {
     curY = 0;
 }
 
-void host_moveCursor(int x, int y) {
+void host_moveCursor(int y, int x) {
     if (x<0) x = 0;
     if (x>=SCREEN_WIDTH) x = SCREEN_WIDTH-1;
     if (y<0) y = 0;
