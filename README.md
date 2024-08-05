@@ -98,13 +98,13 @@ STR$(number) e.g. STR$(2) -> "2"
 LEFT$(string,n)
 RIGHT$(string,n)
 MID$(string,start,n)
-CHR$(char) e.g. CHR$(65) -> "A"
+CHR$(number) e.g. CHR$(65) -> "A"
+CODE(char) e.g. CODE("A") -> 65
 PINREAD(pin) - see Arduino digitalRead()
 ANALOGRD(pin) - see Arduino analogRead()
 ```
 
 Still to come
 ```
-CODE (converting characters to ASCII numbers)
 More maths functions: EXP, SIN, COS, TAN, ARCSIN, ARCCOS, ARCTAN, SQR
 RANDOMIZE (to help randomness of RND)
