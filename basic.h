@@ -69,9 +69,10 @@
 #define TOKEN_DELETE            65
 #define TOKEN_BEEP              66
 #define TOKEN_ABS               67
+#define TOKEN_FORMAT            68
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 67
+#define LAST_IDENT_TOKEN 68
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22

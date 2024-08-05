@@ -79,7 +79,7 @@ PIN pinNum, value (0 = low, non-zero = high)
 PINMODE pinNum, mode ( 0 = input, 1 = output)
 LOAD (from internal EEPROM)
 SAVE (to internal EEPROM) e.g. use SAVE + to set to auto-run
-LOAD "filename", SAVE "filename, DIR, DELETE "filename" if using with external EEPROM.
+LOAD "filename", SAVE "filename, DIR, DELETE "filename", FORMAT if using with external EEPROM.
 ```
 
 "Pseudo-identifiers"
@@ -106,3 +106,5 @@ Still to come
 ```
 CHR$ (converting ASCII numbers to characters)
 CODE (converting characters to ASCII numbers)
+More maths functions: EXP, SIN, COS, TAN, ARCSIN, ARCCOS, ARCTAN, SQR
+RANDOMIZE (to help randomness of RND)

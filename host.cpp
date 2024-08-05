@@ -399,6 +399,10 @@ void host_directoryExtEEPROM() {
     host_outputFreeMem(EXTERNAL_EEPROM_SIZE - addr - 2);
 }
 
+void host_formatExtEEPROM() {
+    writeExtEEPROM(0,0); writeExtEEPROM(1,0);
+}
+
 bool host_removeExtEEPROM(char *fileName) {
     unsigned int addr = getExtEEPROMAddr(fileName);
     if (addr == EXTERNAL_EEPROM_SIZE) return false;

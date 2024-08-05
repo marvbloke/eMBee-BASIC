@@ -39,6 +39,7 @@ void host_loadProgram();
 #include <I2cMaster.h>
 void writeExtEEPROM(unsigned int address, byte data);
 void host_directoryExtEEPROM();
+void host_formatExtEEPROM();
 bool host_saveExtEEPROM(char *fileName);
 bool host_loadExtEEPROM(char *fileName);
 bool host_removeExtEEPROM(char *fileName);
