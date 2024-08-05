@@ -1206,6 +1206,16 @@ int parse_RND() {
 }
 
 int parse_INKEY() {
+    getNextToken(); // eat
+    if (executeMode) {
+        char str[2];
+        str[0] = host_getInkey();
+        str[1] = 0;
+        if (!stackPushStr(str))
+          return ERROR_OUT_OF_MEMORY;
+    }
+    return TYPE_STRING;
+/*
     getNextToken();
     if (executeMode) {
         char str[2];
@@ -1214,7 +1224,7 @@ int parse_INKEY() {
         if (!stackPushStr(str))
             return ERROR_OUT_OF_MEMORY;
     }
-    return TYPE_STRING;	
+    return TYPE_STRING;	*/
 }
 
 int parseUnaryNumExp()

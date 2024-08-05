@@ -296,6 +296,12 @@ char *host_readLine() {
     return &screenBuffer[startPos];
 }
 
+char host_getInkey() {
+    Wire.requestFrom(CARDKB_ADDR, 1);
+    return Wire.read();
+}
+
+
 char host_getKey() {
     char c = inkeyChar;
     inkeyChar = 0;
