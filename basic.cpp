@@ -43,7 +43,7 @@
  *   - FORMAT
  *   - CHR$
  *   - CODE
- *   - SIN, COS, TAN, PI
+ *   - SIN, COS, TAN, PI, SQR, ARCSIN, ARCCOS, ARCTAN, LN
  * ---------------------------------------------------------------------------
  */
 
@@ -138,8 +138,8 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"AT", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
     {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST},
-    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0},
-    {"EXP",1}, {"SQR",1}, {"ARCSIN",1},{"ARCCOS",1},{"ARCTAN",1}
+    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0}/*,
+    {"EXP",1}, {"SQR",1}, {"ARCSIN",1},{"ARCCOS",1},{"ARCTAN",1},{"LN",1}*/
 };
 
 
@@ -1059,7 +1059,7 @@ int parseFnCallExpr() {
             if(!stackPushNum((double)tan(stackPopNum())))
                 return ERROR_OUT_OF_MEMORY;
             break;
-        case TOKEN_EXP:
+/*        case TOKEN_EXP:
             if(!stackPushNum((double)exp(stackPopNum())))
                 return ERROR_OUT_OF_MEMORY;
             break;
@@ -1079,6 +1079,10 @@ int parseFnCallExpr() {
             if(!stackPushNum((double)atan(stackPopNum())))
                 return ERROR_OUT_OF_MEMORY;
             break;
+        case TOKEN_LN:
+            if(!stackPushNum((double)log(stackPopNum())))
+                return ERROR_OUT_OF_MEMORY;
+            break;*/
         case TOKEN_STR:
             {
                 char buf[16];
@@ -1312,11 +1316,12 @@ int parsePrimary() {
     case TOKEN_SIN:
     case TOKEN_COS:
     case TOKEN_TAN:
-    case TOKEN_EXP:
+    /*case TOKEN_EXP:
     case TOKEN_SQR:
     case TOKEN_ARCSIN:
     case TOKEN_ARCCOS:
     case TOKEN_ARCTAN:
+    case TOKEN_LN:*/
     case TOKEN_STR:
     case TOKEN_CHR: 
     case TOKEN_LEN: 
@@ -1619,8 +1624,8 @@ int parseAssignment(bool inputStmt) {
         // from INPUT statement
         if (executeMode) {
             char *inputStr = host_readLine();
-            if (inputStr == -99)
-                return ERROR_BREAK_PRESSED;
+            /*if (inputStr == -99)
+                return ERROR_BREAK_PRESSED;*/
             if (isStringIdentifier) {
                 if (!stackPushStr(inputStr)) return ERROR_OUT_OF_MEMORY;
             }
