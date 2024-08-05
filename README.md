@@ -107,5 +107,5 @@ ANALOGRD(pin) - see Arduino analogRead()
 
 Still to come
 ```
-More maths functions: EXP, SIN, COS, TAN, ARCSIN, ARCCOS, ARCTAN, SQR
+Improve INKEY$ function
 
