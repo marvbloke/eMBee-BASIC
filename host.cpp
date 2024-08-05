@@ -223,6 +223,11 @@ char *host_floatToStr(float f, char *buf) {
     return buf;
 }
 
+char *host_intToChar(int i, char *buf) {
+  buf[0] = (char)i;
+  return buf;
+}
+
 void host_outputFloat(float f) {
     char buf[16];
     host_outputString(host_floatToStr(f, buf));

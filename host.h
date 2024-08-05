@@ -26,6 +26,7 @@ void host_outputProgMemString(const char *str);
 void host_outputChar(char c);
 void host_outputFloat(float f);
 char *host_floatToStr(float f, char *buf);
+char *host_intToChar(int i, char *buf);
 int host_outputInt(long val);
 void host_newLine();
 char *host_readLine();

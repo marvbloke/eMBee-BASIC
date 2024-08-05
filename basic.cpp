@@ -38,13 +38,13 @@
  *  - PINREAD(pin) returns pin value, ANALOGRD(pin) for analog pins
  *  
  *  Added by Matthew Begg
- *   - BEEP length,tone
+ *   - BEEP pitch,duration
+ *   - ABS 
+ *   - FORMAT
+ *   - CHR$
  * ---------------------------------------------------------------------------
  */
 
-// TODO
-// ABS, SIN, COS, EXP etc
-// DATA, READ, RESTORE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -135,7 +135,8 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"RIGHT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"MID$",3|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"CLS",TKN_FMT_POST}, {"PAUSE",TKN_FMT_POST},
     {"AT", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
-    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST}
+    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST},
+    {"CHR$", 1|TKN_RET_TYPE_STR}
 };
 
 
@@ -1049,6 +1050,13 @@ int parseFnCallExpr() {
                     return ERROR_OUT_OF_MEMORY;
             }
             break;
+        case TOKEN_CHR:
+            {
+                char buf[1];
+                if (!stackPushStr(host_intToChar(stackPopNum(), buf)))
+                    return ERROR_OUT_OF_MEMORY;
+            }
+            break;
         case TOKEN_LEN:
             tmp = strlen(stackPopStr());
             if (!stackPushNum(tmp)) return ERROR_OUT_OF_MEMORY;
@@ -1252,7 +1260,8 @@ int parsePrimary() {
         // functions
     case TOKEN_INT: 
     case TOKEN_ABS:
-    case TOKEN_STR: 
+    case TOKEN_STR:
+    case TOKEN_CHR: 
     case TOKEN_LEN: 
     case TOKEN_VAL:
     case TOKEN_LEFT: 
