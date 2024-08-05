@@ -95,7 +95,8 @@ LEN(string) e.g. PRINT LEN("Hello") -> 5
 VAL(string) e.g. PRINT VAL("1+2") -> 3
 INT(number) e.g. INT(1.5) -> 1
 ABS(number) e.g. ABS(-3.5) -> 3.5
-SIN/COS/TAN(number)
+SIN/COS/TAN(radians) - trigonometric functions
+ARCSIN/ARCCOS/ARCTAN(radians) - inverse trigonometric functions
 EXP(number) - returns the exponential number
 SQR(number) e.g. SQR(9) -> 9
 STR$(number) e.g. STR$(2) -> "2"
@@ -110,4 +111,4 @@ ANALOGRD(pin) - see Arduino analogRead()
 
 Still to come
 ```
-More maths functions: ARCSIN, ARCCOS, ARCTAN
+Improved INKEY and INPUT commands

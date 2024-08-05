@@ -78,9 +78,12 @@
 #define TOKEN_PI                74
 #define TOKEN_EXP               75
 #define TOKEN_SQR               76
+#define TOKEN_ARCSIN            77
+#define TOKEN_ARCCOS            78
+#define TOKEN_ARCTAN            79
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 76
+#define LAST_IDENT_TOKEN 79
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22
