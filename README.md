@@ -74,6 +74,7 @@ DIM variable(n1,n2...)
 CLS
 BEEP [pitch],[duration] (pitch is 1=high, 2=mid, 3=low, duration varies depending on pitch e.g. BEEP 1,100 is a short high beep) 
 PAUSE milliseconds
+RAND (re-seeds the random number generator using time elapsed)
 AT y,x sets the cursor (this is a separate command rather than PRINT AT). Starts at 0,0 in top-left and goes to 7,20
 PIN pinNum, value (0 = low, non-zero = high)
 PINMODE pinNum, mode ( 0 = input, 1 = output)
@@ -107,4 +108,4 @@ ANALOGRD(pin) - see Arduino analogRead()
 Still to come
 ```
 More maths functions: EXP, SIN, COS, TAN, ARCSIN, ARCCOS, ARCTAN, SQR
-RANDOMIZE (to help randomness of RND)
+

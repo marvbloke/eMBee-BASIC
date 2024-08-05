@@ -136,7 +136,7 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"AT", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
     {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST},
-    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}
+    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"RAND", TKN_FMT_POST}
 };
 
 
@@ -1793,6 +1793,9 @@ int parseSimpleCmd() {
                 host_cls();
                 host_showBuffer();
                 break;
+            case TOKEN_RANDOMIZE:
+                srand(millis());
+                break;
             case TOKEN_DIR:
                 #if EXTERNAL_EEPROM
                     host_directoryExtEEPROM();
@@ -1871,6 +1874,7 @@ int parseStmts()
         case TOKEN_CONT:
         case TOKEN_RETURN:
         case TOKEN_CLS:
+        case TOKEN_RANDOMIZE:
         case TOKEN_DIR:
         case TOKEN_FORMAT:
             ret = parseSimpleCmd();
