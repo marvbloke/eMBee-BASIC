@@ -77,9 +77,10 @@
 #define TOKEN_TAN               73
 #define TOKEN_PI                74
 #define TOKEN_EXP               75
+#define TOKEN_SQR               76
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 75
+#define LAST_IDENT_TOKEN 76
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22
