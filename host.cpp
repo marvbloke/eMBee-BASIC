@@ -260,6 +260,8 @@ char *host_readLine() {
             // read the next key
             lineDirty[pos / SCREEN_WIDTH] = 1;
             char c = Wire.read();    //char c = keyboard.read();
+            if (c == CARDKB_ESC)
+                return -99;
             if (c>=32 && c<=126)
                 screenBuffer[pos++] = c;
             else if (c==CARDKB_DELETE && pos > startPos)

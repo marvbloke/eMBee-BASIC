@@ -111,4 +111,4 @@ ANALOGRD(pin) - see Arduino analogRead()
 
 Still to come
 ```
-Improved INKEY and INPUT commands
+Improved INKEY$ function

@@ -1619,6 +1619,8 @@ int parseAssignment(bool inputStmt) {
         // from INPUT statement
         if (executeMode) {
             char *inputStr = host_readLine();
+            if (inputStr == -99)
+                return ERROR_BREAK_PRESSED;
             if (isStringIdentifier) {
                 if (!stackPushStr(inputStr)) return ERROR_OUT_OF_MEMORY;
             }
