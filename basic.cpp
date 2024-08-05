@@ -42,6 +42,8 @@
  *   - ABS 
  *   - FORMAT
  *   - CHR$
+ *   - CODE
+ *   - SIN, COS, TAN, PI
  * ---------------------------------------------------------------------------
  */
 
@@ -136,7 +138,7 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"AT", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
     {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST},
-    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}
+    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0}
 };
 
 
@@ -1041,7 +1043,20 @@ int parseFnCallExpr() {
         case TOKEN_ABS:
             float a;
             a = stackPopNum();
-            stackPushNum(abs(a));
+            if(!stackPushNum(abs(a)))
+                return ERROR_OUT_OF_MEMORY;
+            break;
+        case TOKEN_SIN:
+            if(!stackPushNum((double)sin(stackPopNum())))
+                return ERROR_OUT_OF_MEMORY;    
+            break;
+        case TOKEN_COS:
+            if(!stackPushNum((double)cos(stackPopNum())))
+                return ERROR_OUT_OF_MEMORY;
+            break;
+        case TOKEN_TAN:
+            if(!stackPushNum((double)tan(stackPopNum())))
+                return ERROR_OUT_OF_MEMORY;
             break;
         case TOKEN_STR:
             {
@@ -1206,16 +1221,6 @@ int parse_RND() {
 }
 
 int parse_INKEY() {
-    getNextToken(); // eat
-    if (executeMode) {
-        char str[2];
-        str[0] = host_getInkey();
-        str[1] = 0;
-        if (!stackPushStr(str))
-          return ERROR_OUT_OF_MEMORY;
-    }
-    return TYPE_STRING;
-/*
     getNextToken();
     if (executeMode) {
         char str[2];
@@ -1224,7 +1229,14 @@ int parse_INKEY() {
         if (!stackPushStr(str))
             return ERROR_OUT_OF_MEMORY;
     }
-    return TYPE_STRING;	*/
+    return TYPE_STRING;
+}
+
+int parse_PI() {
+    getNextToken();
+    if (executeMode && !stackPushNum((float)PI))
+        return ERROR_OUT_OF_MEMORY;
+    return TYPE_NUMBER;
 }
 
 int parseUnaryNumExp()
@@ -1265,6 +1277,8 @@ int parsePrimary() {
         return parse_RND();
     case TOKEN_INKEY:
         return parse_INKEY();
+    case TOKEN_PI:
+        return parse_PI();
 
         // unary ops
     case TOKEN_MINUS:
@@ -1274,6 +1288,9 @@ int parsePrimary() {
         // functions
     case TOKEN_INT: 
     case TOKEN_ABS:
+    case TOKEN_SIN:
+    case TOKEN_COS:
+    case TOKEN_TAN:
     case TOKEN_STR:
     case TOKEN_CHR: 
     case TOKEN_LEN: 

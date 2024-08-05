@@ -30,7 +30,6 @@ char *host_intToChar(int i, char *buf);
 int host_outputInt(long val);
 void host_newLine();
 char *host_readLine();
-char host_getInkey();
 char host_getKey();
 bool host_ESCPressed();
 void host_outputFreeMem(unsigned int val);

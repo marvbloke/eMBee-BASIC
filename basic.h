@@ -72,9 +72,13 @@
 #define TOKEN_FORMAT            68
 #define TOKEN_CHR               69
 #define TOKEN_CODE              70
+#define TOKEN_SIN               71
+#define TOKEN_COS               72
+#define TOKEN_TAN               73
+#define TOKEN_PI                74
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 70
+#define LAST_IDENT_TOKEN 74
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22
