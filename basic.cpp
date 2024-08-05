@@ -138,7 +138,8 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"AT", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
     {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST},
-    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0}
+    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0},
+    {"EXP",1}
 };
 
 
@@ -1058,6 +1059,10 @@ int parseFnCallExpr() {
             if(!stackPushNum((double)tan(stackPopNum())))
                 return ERROR_OUT_OF_MEMORY;
             break;
+        case TOKEN_EXP:
+            if(!stackPushNum((double)exp(stackPopNum())))
+                return ERROR_OUT_OF_MEMORY;
+            break;
         case TOKEN_STR:
             {
                 char buf[16];
@@ -1291,6 +1296,7 @@ int parsePrimary() {
     case TOKEN_SIN:
     case TOKEN_COS:
     case TOKEN_TAN:
+    case TOKEN_EXP:
     case TOKEN_STR:
     case TOKEN_CHR: 
     case TOKEN_LEN: 

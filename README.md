@@ -96,6 +96,7 @@ VAL(string) e.g. PRINT VAL("1+2")
 INT(number) e.g. INT(1.5)-> 1
 ABS(number) e.g. ABS(-3.5)-> 3.5
 SIN/COS/TAN(number)
+EXP(number)
 STR$(number) e.g. STR$(2) -> "2"
 LEFT$(string,n)
 RIGHT$(string,n)
@@ -108,4 +109,4 @@ ANALOGRD(pin) - see Arduino analogRead()
 
 Still to come
 ```
-More maths functions: EXP, ARCSIN, ARCCOS, ARCTAN, SQR
+More maths functions: ARCSIN, ARCCOS, ARCTAN, SQR
