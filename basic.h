@@ -72,19 +72,20 @@
 #define TOKEN_FORMAT            68
 #define TOKEN_CHR               69
 #define TOKEN_CODE              70
-//#define TOKEN_SIN               71
-//#define TOKEN_COS               72
-//#define TOKEN_TAN               73
-//#define TOKEN_PI                74
-//#define TOKEN_EXP               75
-//#define TOKEN_SQR               76 
-//#define TOKEN_ARCSIN            77
-//#define TOKEN_ARCCOS            78
-//#define TOKEN_ARCTAN            79
-//#define TOKEN_LN                80 
+#define TOKEN_SIN               71
+#define TOKEN_COS               72
+#define TOKEN_TAN               73
+#define TOKEN_PI                74
+#define TOKEN_EXP               75
+#define TOKEN_SQR               76 
+#define TOKEN_ARCSIN            77
+#define TOKEN_ARCCOS            78
+#define TOKEN_ARCTAN            79
+#define TOKEN_LN                80
+#define TOKEN_RAND              81 
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 70
+#define LAST_IDENT_TOKEN 81
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22

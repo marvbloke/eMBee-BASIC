@@ -138,8 +138,8 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"AT", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
     {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST},
-    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, /*{"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0},
-    {"EXP",1}, {"SQR",1}, {"ARCSIN",1},{"ARCCOS",1},{"ARCTAN",1},{"LN",1}*/
+    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0},
+    {"EXP",1}, {"SQR",1}, {"ARCSIN",1},{"ARCCOS",1},{"ARCTAN",1},{"LN",1}, {"RAND", TKN_FMT_POST}
 };
 
 
@@ -1047,7 +1047,7 @@ int parseFnCallExpr() {
             if(!stackPushNum(abs(a)))
                 return ERROR_OUT_OF_MEMORY;
             break;
-/*        case TOKEN_SIN:
+        case TOKEN_SIN:
             if(!stackPushNum((double)sin(stackPopNum())))
                 return ERROR_OUT_OF_MEMORY;    
             break;
@@ -1082,7 +1082,7 @@ int parseFnCallExpr() {
         case TOKEN_LN:
             if(!stackPushNum((double)log(stackPopNum())))
                 return ERROR_OUT_OF_MEMORY;
-            break;*/
+            break;
         case TOKEN_STR:
             {
                 char buf[16];
@@ -1257,12 +1257,12 @@ int parse_INKEY() {
     return TYPE_STRING;
 }
 
-/*int parse_PI() {
+int parse_PI() {
     getNextToken();
     if (executeMode && !stackPushNum((float)PI))
         return ERROR_OUT_OF_MEMORY;
     return TYPE_NUMBER;
-}*/
+}
 
 int parseUnaryNumExp()
 {
@@ -1302,8 +1302,8 @@ int parsePrimary() {
         return parse_RND();
     case TOKEN_INKEY:
         return parse_INKEY();
-    /*case TOKEN_PI:
-        return parse_PI();*/
+    case TOKEN_PI:
+        return parse_PI();
 
         // unary ops
     case TOKEN_MINUS:
@@ -1313,7 +1313,7 @@ int parsePrimary() {
         // functions
     case TOKEN_INT: 
     case TOKEN_ABS:
-    /*case TOKEN_SIN:
+    case TOKEN_SIN:
     case TOKEN_COS:
     case TOKEN_TAN:
     case TOKEN_EXP:
@@ -1321,7 +1321,7 @@ int parsePrimary() {
     case TOKEN_ARCSIN:
     case TOKEN_ARCCOS:
     case TOKEN_ARCTAN:
-    case TOKEN_LN:*/
+    case TOKEN_LN:
     case TOKEN_STR:
     case TOKEN_CHR: 
     case TOKEN_LEN: 
@@ -1863,6 +1863,9 @@ int parseSimpleCmd() {
                     host_formatExtEEPROM();
                 #endif
                 break;
+            case TOKEN_RAND:
+                srand(millis());
+                break;
         }
     }
     return 0;
@@ -1933,6 +1936,7 @@ int parseStmts()
         case TOKEN_CLS:
         case TOKEN_DIR:
         case TOKEN_FORMAT:
+        case TOKEN_RAND:
             ret = parseSimpleCmd();
             break;
             

@@ -74,6 +74,7 @@ DIM variable(n1,n2...)
 CLS
 BEEP [pitch],[duration] (pitch is 1=high, 2=mid, 3=low, duration varies depending on pitch e.g. BEEP 1,100 is a short high beep) 
 PAUSE milliseconds
+RAND (re-seeds the random number generator using time elapsed)
 AT y,x sets the cursor (this is a separate command rather than PRINT AT). Starts at 0,0 in top-left and goes to 7,20
 PIN pinNum, value (0 = low, non-zero = high)
 PINMODE pinNum, mode ( 0 = input, 1 = output)
@@ -86,7 +87,7 @@ LOAD "filename", SAVE "filename, DIR, DELETE "filename", FORMAT if using with ex
 ```
 INKEY$ - returns (and eats) the last key pressed buffer (non-blocking). e.g. PRINT INKEY$
 RND - random number betweeen 0 and 1. e.g. LET a = RND
-Coming soon: PI - 3.141593
+PI - 3.141593
 ```
 
 Functions
@@ -95,8 +96,11 @@ LEN(string) e.g. PRINT LEN("Hello") -> 5
 VAL(string) e.g. PRINT VAL("1+2") -> 3
 INT(number) e.g. INT(1.5) -> 1
 ABS(number) e.g. ABS(-3.5) -> 3.5
-Coming soon: SIN/COS/TAN(radians) - trigonometric functions
-Coming soon: ARCSIN/ARCCOS/ARCTAN(number) - inverse trigonometric functions
+SIN/COS/TAN(radians) - trigonometric functions
+ARCSIN/ARCCOS/ARCTAN(number) - inverse trigonometric functions
+EXP(number) - returns the exponential number
+LN(number) - returns the natural logarithm of a number
+SQR(number) e.g. SQR(9) -> 3
 STR$(number) e.g. STR$(2) -> "2"
 LEFT$(string,n)
 RIGHT$(string,n)
