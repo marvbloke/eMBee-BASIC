@@ -86,7 +86,7 @@ LOAD "filename", SAVE "filename, DIR, DELETE "filename", FORMAT if using with ex
 ```
 INKEY$ - returns (and eats) the last key pressed buffer (non-blocking). e.g. PRINT INKEY$
 RND - random number betweeen 0 and 1. e.g. LET a = RND
-*PI - 3.141593*
+Coming soon: PI - 3.141593
 ```
 
 Functions
@@ -95,7 +95,8 @@ LEN(string) e.g. PRINT LEN("Hello") -> 5
 VAL(string) e.g. PRINT VAL("1+2") -> 3
 INT(number) e.g. INT(1.5) -> 1
 ABS(number) e.g. ABS(-3.5) -> 3.5
-*SIN/COS/TAN(radians) - trigonometric functions*
+Coming soon: SIN/COS/TAN(radians) - trigonometric functions
+Coming soon: ARCSIN/ARCCOS/ARCTAN(number) - inverse trigonometric functions
 STR$(number) e.g. STR$(2) -> "2"
 LEFT$(string,n)
 RIGHT$(string,n)
