@@ -2,8 +2,9 @@
 #include "basic.h"
 
 #include <SSD1306ASCII.h>
-//#include <PS2Keyboard.h>
-#include <Wire.h>     // used for CardKB
+#include <PS2Keyboard.h>
+//#include <Wire.h>     // used for CardKB
+#include <I2cMaster.h>
 #include <EEPROM.h>
 
 // CardKB keyboard
@@ -15,6 +16,9 @@
 extern SSD1306ASCII oled;
 //extern PS2Keyboard keyboard;
 extern EEPROMClass EEPROM;
+extern TwiMaster rtc;
+
+
 int timer1_counter;
 
 char screenBuffer[SCREEN_WIDTH*SCREEN_HEIGHT];
@@ -46,12 +50,29 @@ ISR(TIMER1_OVF_vect)        // interrupt service routine
 }
 
 
+
+char host_readKeyboard() {
+    rtc.start((CARDKB_ADDR<<1) | I2C_WRITE);
+    rtc.write(1);
+    rtc.restart((CARDKB_ADDR<<1) | I2C_READ);
+    char c = rtc.read(true);
+    rtc.stop();
+    delay(5);
+    return c;
+}
+
+void host_initKeyboard() {
+    delay(100);
+    host_readKeyboard();
+}
+
 void host_init(int buzzerPin) {
     buzPin = buzzerPin;
     oled.clear();
     if (buzPin)
         pinMode(buzPin, OUTPUT);
     initTimer();
+    host_initKeyboard();
 }
 
 void host_sleep(long ms) {
@@ -242,6 +263,7 @@ void host_newLine() {
     lineDirty[curY] = 1;
 }
 
+
 char *host_readLine() {
     inputMode = 1;
 
@@ -253,15 +275,14 @@ char *host_readLine() {
 
     bool done = false;
     while (!done) {
-        Wire.requestFrom(CARDKB_ADDR, 1);
-        while (Wire.available()) {          // while (keyboard.available())
+        //Wire.requestFrom(CARDKB_ADDR, 1);
+        char c = host_readKeyboard();
+        while (c) {          // while (keyboard.available())
             //host_click();
             //Serial.println("Input detected");  // debug
             // read the next key
             lineDirty[pos / SCREEN_WIDTH] = 1;
-            char c = Wire.read();    //char c = keyboard.read();
-            /*if (c == CARDKB_ESC)
-                return -99;*/
+            //char c = Wire.read();    //char c = keyboard.read();
             if (c>=32 && c<=126)
                 screenBuffer[pos++] = c;
             else if (c==CARDKB_DELETE && pos > startPos)
@@ -285,6 +306,7 @@ char *host_readLine() {
                 }
             }
             redraw = 1;
+            c = host_readKeyboard();
         }
         if (redraw)
             host_showBuffer();
@@ -308,13 +330,21 @@ char host_getKey() {
 }
 
 bool host_ESCPressed() {
-    Wire.requestFrom(CARDKB_ADDR, 1);
+    //Wire.requestFrom(CARDKB_ADDR, 1);
+    char c = host_readKeyboard();
+    while (c) {
+      inkeyChar = c;
+      if (inkeyChar == CARDKB_ESC)
+        return true;
+      c = host_readKeyboard();
+    }
+    /*
     while (Wire.available()) {      // while (keyboard.available())
         // read the next key
         inkeyChar = Wire.read();
         if (inkeyChar == CARDKB_ESC)
             return true;
-    }
+    }*/
     return false;
 }
 
@@ -340,10 +370,6 @@ void host_loadProgram() {
     for (int i=0; i<sysPROGEND; i++)
         mem[i] = EEPROM.read(i+3);
 }
-
-#if EXTERNAL_EEPROM
-#include <I2cMaster.h>
-extern TwiMaster rtc;
 
 void writeExtEEPROM(unsigned int address, byte data) 
 {
@@ -464,4 +490,3 @@ bool host_saveExtEEPROM(char *fileName) {
     return true;
 }
 
-#endif

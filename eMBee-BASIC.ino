@@ -1,11 +1,12 @@
 #include <font.h>
 #include <SSD1306ASCII.h>
 // ^ - modified for faster SPI
-//#include <PS2Keyboard.h>
 #include <EEPROM.h>
-#include <Wire.h>
 #include "basic.h"
 #include "host.h"
+//#include <Wire.h>
+#include <I2cMaster.h>
+
 
 // Define in host.h if using an external EEPROM e.g. 24LC256
 // Should be connected to the I2C pins
@@ -15,11 +16,10 @@
 // If using an external EEPROM, you'll also have to initialise it by
 // running once with the appropriate lines enabled in setup() - see below
 
-#if EXTERNAL_EEPROM
-#include <I2cMaster.h>
+//#if EXTERNAL_EEPROM
 // Instance of class for hardware master with pullups enabled
 TwiMaster rtc(true);
-#endif
+//#endif
 
 // Keyboard
 //const int DataPin = 8;
@@ -57,7 +57,7 @@ void setup() {
     //keyboard.begin(DataPin, IRQpin);
     oled.ssd1306_init(SSD1306_SWITCHCAPVCC);
     //Serial.begin(115200);     // debug
-    Wire.begin();
+    //Wire.begin();
     reset();
     host_init(BUZZER_PIN);
     host_cls();
