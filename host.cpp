@@ -3,7 +3,6 @@
 
 #include <SSD1306ASCII.h>
 #include <PS2Keyboard.h>
-//#include <Wire.h>     // used for CardKB
 #include <I2cMaster.h>
 #include <EEPROM.h>
 
@@ -14,7 +13,6 @@
 #define CARDKB_ESC 0x1B
 
 extern SSD1306ASCII oled;
-//extern PS2Keyboard keyboard;
 extern EEPROMClass EEPROM;
 extern TwiMaster rtc;
 
@@ -275,11 +273,9 @@ char *host_readLine() {
 
     bool done = false;
     while (!done) {
-        //Wire.requestFrom(CARDKB_ADDR, 1);
         char c = host_readKeyboard();
-        while (c) {          // while (keyboard.available())
-            //host_click();
-            //Serial.println("Input detected");  // debug
+        while (c) {          
+            host_click();
             // read the next key
             lineDirty[pos / SCREEN_WIDTH] = 1;
             //char c = Wire.read();    //char c = keyboard.read();
@@ -316,7 +312,7 @@ char *host_readLine() {
     // remove the cursor
     lineDirty[curY] = 1;
     host_showBuffer();
-    //host_click();       // click at the end of a line
+    host_click();       // click at the end of a line
     return &screenBuffer[startPos];
 }
 
@@ -330,7 +326,6 @@ char host_getKey() {
 }
 
 bool host_ESCPressed() {
-    //Wire.requestFrom(CARDKB_ADDR, 1);
     char c = host_readKeyboard();
     while (c) {
       inkeyChar = c;
@@ -338,13 +333,6 @@ bool host_ESCPressed() {
         return true;
       c = host_readKeyboard();
     }
-    /*
-    while (Wire.available()) {      // while (keyboard.available())
-        // read the next key
-        inkeyChar = Wire.read();
-        if (inkeyChar == CARDKB_ESC)
-            return true;
-    }*/
     return false;
 }
 
