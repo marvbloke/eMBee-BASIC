@@ -27,12 +27,6 @@ TwiMaster rtc(true);
 #define OLED_RST 13
 SSD1306ASCII oled(OLED_DATA, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
 
-// CardKB keyboard
-#define CARDKB_ADDR 0x5F
-#define CARDKB_DELETE 0x08
-#define CARDKB_ENTER 0x0D
-#define CARDKB_ESC 0x1B
-
 // buzzer pin, 0 = disabled/not present
 #define BUZZER_PIN    5
 

@@ -244,6 +244,7 @@ char *host_floatToStr(float f, char *buf) {
 
 char *host_intToChar(int i, char *buf) {
   buf[0] = (char)i;
+  buf[1] = '\0';
   return buf;
 }
 

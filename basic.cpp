@@ -1092,8 +1092,8 @@ int parseFnCallExpr() {
             break;
         case TOKEN_CHR:
             {
-                char buf[0];
-                if (!stackPushStr(host_intToChar(stackPopNum(), buf)))
+                char buf[1];
+                if (!stackPushStr(host_intToChar(stackPopNum(), buf[1])))
                     return ERROR_OUT_OF_MEMORY;
             }
             break;
