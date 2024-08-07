@@ -281,7 +281,7 @@ char *host_readLine() {
             lineDirty[pos / SCREEN_WIDTH] = 1;
             if (c == CARDKB_ESC)
                 return -99;
-            if (c>=32 && c<=126)
+            if (c>=32 && c<=127)
                 screenBuffer[pos++] = c;
             else if (c==CARDKB_DELETE && pos > startPos)
                 screenBuffer[--pos] = 0;
