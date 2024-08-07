@@ -12,7 +12,7 @@ Prerequisites
 
 2: A [CardKB keyboard](https://www.okdo.com/p/cardkb-mini-keyboard-unit-mega328p/?cm_mmc=UK-PLA-DS3A-_-google&&campaignid=11705773582&adgroupid=116689368627&network=g&device=m&product_partition_id=983775196933&product_id=2027611-gb&gclid=CjwKCAiAt9z-BRBCEiwA_bWv-H259FRGtjNEjpWTQtWl0V5uXgjzWPzhluYvt18KG0IBjgX63514HBoCl2YQAvD_BwE&gclsrc=aw.ds) 
 
-3: An SSD1306 based OLED screen connected using SPI. Runs at 128x64 resolution in text mode.
+3: An SSD1306 based OLED screen connected using SPI. Runs at 128x64 resolution in text mode (21 characters wide by 8 characters tall).
 
 4: An Altoids tin to make it a truly portable device. I use a PP3 9-volt battery connected to the ATMega328P via an LM7805 regulator.
 
