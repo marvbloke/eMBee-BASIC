@@ -60,8 +60,10 @@ char host_readKeyboard() {
 }
 
 void host_initKeyboard() {
-    delay(100);
-    host_readKeyboard();
+    rtc.start((CARDKB_ADDR<<1) | I2C_WRITE);
+    rtc.write(1);
+    rtc.stop();
+    delay(1000);
 }
 
 void host_init(int buzzerPin) {
