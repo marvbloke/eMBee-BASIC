@@ -35,6 +35,8 @@ bool host_ESCPressed();
 void host_outputFreeMem(unsigned int val);
 void host_saveProgram(bool autoexec);
 void host_loadProgram();
+char host_recvUART();
+void host_sendUART(char c);
 
 #if EXTERNAL_EEPROM
 #include <I2cMaster.h>

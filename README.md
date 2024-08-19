@@ -81,11 +81,13 @@ PINMODE pinNum, mode ( 0 = input, 1 = output)
 LOAD (from internal EEPROM)
 SAVE (to internal EEPROM) e.g. use SAVE + to set to auto-run
 LOAD "filename", SAVE "filename, DIR, DELETE "filename", FORMAT if using with external EEPROM.
+SEND "string" - sends a string via UART interface
 ```
 
 "Pseudo-identifiers"
 ```
 INKEY$ - returns (and eats) the last key pressed buffer (non-blocking). e.g. PRINT INKEY$
+RECV$ - receives a character from UART interface
 RND - random number betweeen 0 and 1. e.g. LET a = RND
 PI - 3.141593
 ```
@@ -113,4 +115,4 @@ ANALOGRD(pin) - see Arduino analogRead()
 
 Still to come
 ```
-I2C networking between eMBee ONEs
+Receiving strings of varying length

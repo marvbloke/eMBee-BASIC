@@ -83,9 +83,11 @@
 #define TOKEN_ARCTAN            79
 #define TOKEN_LN                80
 #define TOKEN_RAND              81 
+#define TOKEN_SEND              82
+#define TOKEN_RECV              83
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 81
+#define LAST_IDENT_TOKEN 83
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22
