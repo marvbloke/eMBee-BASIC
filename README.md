@@ -115,4 +115,4 @@ ANALOGRD(pin) - see Arduino analogRead()
 
 Still to come
 ```
-Receiving strings of varying length
+Sending/receiving programs via UART
