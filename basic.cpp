@@ -1270,13 +1270,16 @@ int parse_RECV() {
 }
 
 int parse_SEND() {
-    int len;
-    len = strlen(stackGetStr());
-    char str[len];
-    strcpy(str, stackPopStr());
-    for (int i=0; i<len; i++) {
-      host_sendUART(str[i]);
+    int val;
+    getNextToken(); // eat SEND
+    val = parseExpression();
+    if (!IS_TYPE_STR(val)) return ERROR_EXPR_EXPECTED_STR;
+    if (executeMode) {
+        for (int i=0; i<strlen(stackGetStr()); i++) 
+            host_sendUART(stackGetStr()[i]);
+            stackPopStr();
     }
+    return 0;
 }
 
 int parse_PI() {

@@ -14,7 +14,7 @@
 
 // UART communication
 #define FOSC 16000000UL   // Clock Speed
-#define BAUD 9600
+#define BAUD 300
 #define MYUBRR FOSC/16/BAUD-1
 
 extern SSD1306ASCII oled;
@@ -87,6 +87,7 @@ void host_sendUART(char c) {
     // Wait for empty transmit buffer
     while (!(UCSR0A & (1<<UDRE0)));
     UDR0 = c;
+    //delay(50);
 }
 
 char host_recvUART() {
