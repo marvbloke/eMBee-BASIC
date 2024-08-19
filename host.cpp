@@ -12,6 +12,11 @@
 #define CARDKB_ENTER 0x0D
 #define CARDKB_ESC 0x1B
 
+// UART communication
+#define FOSC 16000000UL   // Clock Speed
+#define BAUD 9600
+#define MYUBRR FOSC/16/BAUD-1
+
 extern SSD1306ASCII oled;
 extern EEPROMClass EEPROM;
 extern TwiMaster rtc;
@@ -66,12 +71,37 @@ void host_initKeyboard() {
     delay(1000);
 }
 
+void host_initUART() {
+    // Set baud rate (adjust according to your needs)
+    UBRR0H = (unsigned char)(MYUBRR >> 8);
+    UBRR0L = (unsigned char)MYUBRR;
+
+    // Enable receiver and transmitter
+    UCSR0B |= (1<<RXEN0) | (1<<TXEN0);
+
+    // Set frame format: 8 data bits, no parity, 1 stop bit
+    UCSR0C = (1<<UCSZ01) | (1<<UCSZ00);
+}
+
+void host_sendUART(char c) {
+    // Wait for empty transmit buffer
+    while (!(UCSR0A & (1<<UDRE0)));
+    UDR0 = c;
+}
+
+char host_recvUART() {
+    // Wait for data to be received
+    while (!(UCSR0A & (1<<RXC0)));
+    return UDR0;
+}
+
 void host_init(int buzzerPin) {
     buzPin = buzzerPin;
     oled.clear();
     if (buzPin)
         pinMode(buzPin, OUTPUT);
     initTimer();
+    host_initUART();
     host_initKeyboard();
 }
 

@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
  * Basic Interpreter
- * Robin Edwards 2014
+ * Robin Edwards 2014 and Matthew Begg 2024
  * ---------------------------------------------------------------------------
  * This BASIC is modelled on Sinclair BASIC for the ZX81 and ZX Spectrum. It
  * should be capable of running most of the examples in the manual for both
@@ -43,7 +43,7 @@
  *   - FORMAT
  *   - CHR$
  *   - CODE
- *   - SIN, COS, TAN, PI, SQR, ARCSIN, ARCCOS, ARCTAN, LN
+ *   - SIN, COS, TAN, PI, SQR, ARCSIN, ARCCOS, ARCTAN, LN, EXP
  * ---------------------------------------------------------------------------
  */
 
@@ -139,7 +139,7 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
     {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST},
     {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0},
-    {"EXP",1}, {"SQR",1}, {"ARCSIN",1},{"ARCCOS",1},{"ARCTAN",1},{"LN",1}, {"RAND", TKN_FMT_POST}
+    {"EXP",1}, {"SQR",1}, {"ARCSIN",1},{"ARCCOS",1},{"ARCTAN",1},{"LN",1}, {"RAND", TKN_FMT_POST}, {"SEND$", TKN_FMT_POST}, {"RECV$",0}
 };
 
 
@@ -1257,6 +1257,28 @@ int parse_INKEY() {
     return TYPE_STRING;
 }
 
+int parse_RECV() {
+    getNextToken();
+    if (executeMode) {
+        char str[2];
+        str[0] = host_recvUART();
+        str[1] = 0;
+        if (!stackPushStr(str))
+            return ERROR_OUT_OF_MEMORY;
+    }
+    return TYPE_STRING;
+}
+
+int parse_SEND() {
+    int len;
+    len = strlen(stackGetStr());
+    char str[len];
+    strcpy(str, stackPopStr());
+    for (int i=0; i<len; i++) {
+      host_sendUART(str[i]);
+    }
+}
+
 int parse_PI() {
     getNextToken();
     if (executeMode && !stackPushNum((float)PI))
@@ -1302,6 +1324,8 @@ int parsePrimary() {
         return parse_RND();
     case TOKEN_INKEY:
         return parse_INKEY();
+    case TOKEN_RECV:
+        return parse_RECV();
     case TOKEN_PI:
         return parse_PI();
 
@@ -1915,6 +1939,7 @@ int parseStmts()
         case TOKEN_GOSUB: ret = parse_GOSUB(); break;
         case TOKEN_DIM: ret = parse_DIM(); break;
         case TOKEN_PAUSE: ret = parse_PAUSE(); break;
+        case TOKEN_SEND: ret = parse_SEND(); break;
 
         case TOKEN_LOAD:
         case TOKEN_SAVE:
