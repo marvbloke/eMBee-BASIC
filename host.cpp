@@ -91,8 +91,9 @@ void host_sendUART(char c) {
 
 char host_recvUART() {
     // Wait for data to be received
-    while (!(UCSR0A & (1<<RXC0)));
-    return UDR0;
+    if ((UCSR0A & (1<<RXC0)))
+        return UDR0;
+    else return 0;
 }
 
 void host_init(int buzzerPin) {
