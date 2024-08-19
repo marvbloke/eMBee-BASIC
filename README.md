@@ -81,7 +81,7 @@ PINMODE pinNum, mode ( 0 = input, 1 = output)
 LOAD (from internal EEPROM)
 SAVE (to internal EEPROM) e.g. use SAVE + to set to auto-run
 LOAD "filename", SAVE "filename, DIR, DELETE "filename", FORMAT if using with external EEPROM.
-SEND$ "string" - sends a string via UART interface
+SEND "string" - sends a string via UART interface
 ```
 
 "Pseudo-identifiers"
