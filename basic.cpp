@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------
  * Basic Interpreter
- * Robin Edwards 2014 and Matthew Begg 2024
+ * Robin Edwards 2014
  * ---------------------------------------------------------------------------
  * This BASIC is modelled on Sinclair BASIC for the ZX81 and ZX Spectrum. It
  * should be capable of running most of the examples in the manual for both
@@ -36,17 +36,12 @@
  *  - PINMODE <pin>, <mode> - sets the pin mode (0=input, 1=output, 2=pullup)
  *  - PIN <pin>, <state> - sets the pin high (non zero) or low (zero)
  *  - PINREAD(pin) returns pin value, ANALOGRD(pin) for analog pins
- *  
- *  Added by Matthew Begg
- *   - BEEP pitch,duration
- *   - ABS 
- *   - FORMAT
- *   - CHR$
- *   - CODE
- *   - SIN, COS, TAN, PI, SQR, ARCSIN, ARCCOS, ARCTAN, LN, EXP
  * ---------------------------------------------------------------------------
  */
 
+// TODO
+// ABS, SIN, COS, EXP etc
+// DATA, READ, RESTORE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -135,11 +130,13 @@ PROGMEM const TokenTableEntry tokenTable[] = {
     {"STEP",TKN_FMT_PRE|TKN_FMT_POST}, {"NEXT", TKN_FMT_POST}, {"MOD",TKN_FMT_PRE|TKN_FMT_POST}, {"NEW",TKN_FMT_POST},
     {"GOSUB",TKN_FMT_POST}, {"RETURN",TKN_FMT_POST}, {"DIM", TKN_FMT_POST}, {"LEFT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR},
     {"RIGHT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"MID$",3|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"CLS",TKN_FMT_POST}, {"PAUSE",TKN_FMT_POST},
+<<<<<<< HEAD
     {"AT", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
+=======
+    {"POS", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
+>>>>>>> parent of 4aede8a (Merge branch 'master' into eMBee-BASIC-2)
     {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
-    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}, {"BEEP", TKN_FMT_POST}, {"ABS",1}, {"FORMAT", TKN_FMT_POST},
-    {"CHR$", 1|TKN_RET_TYPE_STR}, {"CODE",1|TKN_ARG1_TYPE_STR}, {"SIN",1}, {"COS",1}, {"TAN",1}, {"PI",0},
-    {"EXP",1}, {"SQR",1}, {"ARCSIN",1},{"ARCCOS",1},{"ARCTAN",1},{"LN",1}, {"RAND", TKN_FMT_POST}, {"SEND", TKN_FMT_POST}, {"RECV$",0}
+    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}
 };
 
 
@@ -1041,59 +1038,10 @@ int parseFnCallExpr() {
         case TOKEN_INT:
             stackPushNum((float)floor(stackPopNum()));
             break;
-        case TOKEN_ABS:
-            float a;
-            a = stackPopNum();
-            if(!stackPushNum(abs(a)))
-                return ERROR_OUT_OF_MEMORY;
-            break;
-        case TOKEN_SIN:
-            if(!stackPushNum((double)sin(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;    
-            break;
-        case TOKEN_COS:
-            if(!stackPushNum((double)cos(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;
-            break;
-        case TOKEN_TAN:
-            if(!stackPushNum((double)tan(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;
-            break;
-        case TOKEN_EXP:
-            if(!stackPushNum((double)exp(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;
-            break;
-        case TOKEN_SQR:
-            if(!stackPushNum((double)sqrt(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;
-            break;
-        case TOKEN_ARCSIN:
-            if(!stackPushNum((double)asin(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;    
-            break;
-        case TOKEN_ARCCOS:
-            if(!stackPushNum((double)acos(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;
-            break;
-        case TOKEN_ARCTAN:
-            if(!stackPushNum((double)atan(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;
-            break;
-        case TOKEN_LN:
-            if(!stackPushNum((double)log(stackPopNum())))
-                return ERROR_OUT_OF_MEMORY;
-            break;
         case TOKEN_STR:
             {
                 char buf[16];
                 if (!stackPushStr(host_floatToStr(stackPopNum(), buf)))
-                    return ERROR_OUT_OF_MEMORY;
-            }
-            break;
-        case TOKEN_CHR:
-            {
-                char buf[1];
-                if (!stackPushStr(host_intToChar(stackPopNum(), buf[1])))
                     return ERROR_OUT_OF_MEMORY;
             }
             break;
@@ -1135,10 +1083,6 @@ int parseFnCallExpr() {
                 tokenBuffer = oldTokenBuffer;
                 getNextToken();
             }
-            break;
-        case TOKEN_CODE:
-            char tmp = *stackPopStr();
-            stackPushNum((int)tmp);
             break;
         case TOKEN_LEFT:
             tmp = (int)stackPopNum();
@@ -1254,39 +1198,7 @@ int parse_INKEY() {
         if (!stackPushStr(str))
             return ERROR_OUT_OF_MEMORY;
     }
-    return TYPE_STRING;
-}
-
-int parse_RECV() {
-    getNextToken();
-    if (executeMode) {
-        char str[2];
-        str[0] = host_recvUART();
-        str[1] = 0;
-        if (!stackPushStr(str))
-            return ERROR_OUT_OF_MEMORY;
-    }
-    return TYPE_STRING;
-}
-
-int parse_SEND() {
-    int val;
-    getNextToken(); // eat SEND
-    val = parseExpression();
-    if (!IS_TYPE_STR(val)) return ERROR_EXPR_EXPECTED_STR;
-    if (executeMode) {
-        for (int i=0; i<strlen(stackGetStr()); i++) 
-            host_sendUART(stackGetStr()[i]);
-            stackPopStr();
-    }
-    return 0;
-}
-
-int parse_PI() {
-    getNextToken();
-    if (executeMode && !stackPushNum((float)PI))
-        return ERROR_OUT_OF_MEMORY;
-    return TYPE_NUMBER;
+    return TYPE_STRING;	
 }
 
 int parseUnaryNumExp()
@@ -1327,10 +1239,6 @@ int parsePrimary() {
         return parse_RND();
     case TOKEN_INKEY:
         return parse_INKEY();
-    case TOKEN_RECV:
-        return parse_RECV();
-    case TOKEN_PI:
-        return parse_PI();
 
         // unary ops
     case TOKEN_MINUS:
@@ -1339,21 +1247,9 @@ int parsePrimary() {
 
         // functions
     case TOKEN_INT: 
-    case TOKEN_ABS:
-    case TOKEN_SIN:
-    case TOKEN_COS:
-    case TOKEN_TAN:
-    case TOKEN_EXP:
-    case TOKEN_SQR:
-    case TOKEN_ARCSIN:
-    case TOKEN_ARCCOS:
-    case TOKEN_ARCTAN:
-    case TOKEN_LN:
-    case TOKEN_STR:
-    case TOKEN_CHR: 
+    case TOKEN_STR: 
     case TOKEN_LEN: 
     case TOKEN_VAL:
-    case TOKEN_CODE:
     case TOKEN_LEFT: 
     case TOKEN_RIGHT: 
     case TOKEN_MID: 
@@ -1617,9 +1513,6 @@ int parseTwoIntCmd() {
         case TOKEN_POSITION: 
             host_moveCursor(first,second); 
             break;
-        case TOKEN_BEEP:
-            host_beep(first,second);
-            break;
         case TOKEN_PIN: 
             host_digitalWrite(first,second); 
             break;
@@ -1651,8 +1544,6 @@ int parseAssignment(bool inputStmt) {
         // from INPUT statement
         if (executeMode) {
             char *inputStr = host_readLine();
-            if (inputStr == -99)
-                return ERROR_BREAK_PRESSED;
             if (isStringIdentifier) {
                 if (!stackPushStr(inputStr)) return ERROR_OUT_OF_MEMORY;
             }
@@ -1881,17 +1772,9 @@ int parseSimpleCmd() {
                 host_showBuffer();
                 break;
             case TOKEN_DIR:
-                #if EXTERNAL_EEPROM
-                    host_directoryExtEEPROM();
-                #endif
-                break;
-            case TOKEN_FORMAT:
-                #if EXTERNAL_EEPROM
-                    host_formatExtEEPROM();
-                #endif
-                break;
-            case TOKEN_RAND:
-                srand(millis());
+#if EXTERNAL_EEPROM
+                host_directoryExtEEPROM();
+#endif
                 break;
         }
     }
@@ -1942,8 +1825,7 @@ int parseStmts()
         case TOKEN_GOSUB: ret = parse_GOSUB(); break;
         case TOKEN_DIM: ret = parse_DIM(); break;
         case TOKEN_PAUSE: ret = parse_PAUSE(); break;
-        case TOKEN_SEND: ret = parse_SEND(); break;
-
+        
         case TOKEN_LOAD:
         case TOKEN_SAVE:
         case TOKEN_DELETE:
@@ -1951,7 +1833,6 @@ int parseStmts()
             break;
         
         case TOKEN_POSITION:
-        case TOKEN_BEEP:
         case TOKEN_PIN:
         case TOKEN_PINMODE:
             ret = parseTwoIntCmd(); 
@@ -1963,8 +1844,6 @@ int parseStmts()
         case TOKEN_RETURN:
         case TOKEN_CLS:
         case TOKEN_DIR:
-        case TOKEN_FORMAT:
-        case TOKEN_RAND:
             ret = parseSimpleCmd();
             break;
             
@@ -2106,3 +1985,4 @@ void reset() {
     stopStmtNumber = 0;
     lineNumber = 0;
 }
+

@@ -53,7 +53,10 @@ ISR(TIMER1_OVF_vect)        // interrupt service routine
 }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 4aede8a (Merge branch 'master' into eMBee-BASIC-2)
 char host_readKeyboard() {
     rtc.start((CARDKB_ADDR<<1) | I2C_WRITE);
     rtc.write(1);
@@ -134,16 +137,6 @@ void host_click() {
     digitalWrite(buzPin, LOW);
 }
 
-void host_beep(int beepPitch, int beepLength) {
-    if (!buzPin) return;
-    for (int i=1; i<=beepLength; i++) {
-        digitalWrite(buzPin, HIGH);
-        delay(beepPitch);
-        digitalWrite(buzPin, LOW);
-        delay(beepPitch);      
-    }
-}
-
 void host_startupTone() {
     if (!buzPin) return;
     for (int i=1; i<=2; i++) {
@@ -164,7 +157,7 @@ void host_cls() {
     curY = 0;
 }
 
-void host_moveCursor(int y, int x) {
+void host_moveCursor(int x, int y) {
     if (x<0) x = 0;
     if (x>=SCREEN_WIDTH) x = SCREEN_WIDTH-1;
     if (y<0) y = 0;
@@ -276,12 +269,6 @@ char *host_floatToStr(float f, char *buf) {
     return buf;
 }
 
-char *host_intToChar(int i, char *buf) {
-  buf[0] = (char)i;
-  buf[1] = '\0';
-  return buf;
-}
-
 void host_outputFloat(float f) {
     char buf[16];
     host_outputString(host_floatToStr(f, buf));
@@ -295,7 +282,6 @@ void host_newLine() {
     memset(screenBuffer + SCREEN_WIDTH*(curY), 32, SCREEN_WIDTH);
     lineDirty[curY] = 1;
 }
-
 
 char *host_readLine() {
     inputMode = 1;
@@ -348,10 +334,8 @@ char *host_readLine() {
     // remove the cursor
     lineDirty[curY] = 1;
     host_showBuffer();
-    host_click();       // click at the end of a line
     return &screenBuffer[startPos];
 }
-
 
 char host_getKey() {
     char c = inkeyChar;
@@ -457,10 +441,6 @@ void host_directoryExtEEPROM() {
     host_outputFreeMem(EXTERNAL_EEPROM_SIZE - addr - 2);
 }
 
-void host_formatExtEEPROM() {
-    writeExtEEPROM(0,0); writeExtEEPROM(1,0);
-}
-
 bool host_removeExtEEPROM(char *fileName) {
     unsigned int addr = getExtEEPROMAddr(fileName);
     if (addr == EXTERNAL_EEPROM_SIZE) return false;
@@ -476,15 +456,14 @@ bool host_removeExtEEPROM(char *fileName) {
 }
 
 bool host_loadExtEEPROM(char *fileName) {
-    unsigned int addr = getExtEEPROMAddr(fileName);      
-    if (addr == EXTERNAL_EEPROM_SIZE) return false;  
+    unsigned int addr = getExtEEPROMAddr(fileName);
+    if (addr == EXTERNAL_EEPROM_SIZE) return false;
     // skip filename
     addr += 2;
     while (readExtEEPROM(addr++)) ;
     sysPROGEND = readExtEEPROM(addr) | (readExtEEPROM(addr+1) << 8);
     for (int i=0; i<sysPROGEND; i++)
         mem[i] = readExtEEPROM(addr+2+i);
-    return true;
 }
 
 bool host_saveExtEEPROM(char *fileName) {
@@ -514,3 +493,7 @@ bool host_saveExtEEPROM(char *fileName) {
     return true;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 4aede8a (Merge branch 'master' into eMBee-BASIC-2)

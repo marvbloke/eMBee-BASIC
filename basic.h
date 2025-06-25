@@ -67,27 +67,9 @@
 #define TOKEN_ANALOGRD          63
 #define TOKEN_DIR               64
 #define TOKEN_DELETE            65
-#define TOKEN_BEEP              66
-#define TOKEN_ABS               67
-#define TOKEN_FORMAT            68
-#define TOKEN_CHR               69
-#define TOKEN_CODE              70
-#define TOKEN_SIN               71
-#define TOKEN_COS               72
-#define TOKEN_TAN               73
-#define TOKEN_PI                74
-#define TOKEN_EXP               75
-#define TOKEN_SQR               76 
-#define TOKEN_ARCSIN            77
-#define TOKEN_ARCCOS            78
-#define TOKEN_ARCTAN            79
-#define TOKEN_LN                80
-#define TOKEN_RAND              81 
-#define TOKEN_SEND              82
-#define TOKEN_RECV              83
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 83
+#define LAST_IDENT_TOKEN 65
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22
@@ -123,7 +105,7 @@
 #define MAX_IDENT_LEN	8
 #define MAX_NUMBER_LEN	10
 
-#define MEMORY_SIZE	1024  // originally 1024
+#define MEMORY_SIZE	1024
 extern unsigned char mem[];
 extern int sysPROGEND;
 extern int sysSTACKSTART;
@@ -159,3 +141,4 @@ int tokenize(unsigned char *input, unsigned char *output, int outputSize);
 int processInput(unsigned char *tokenBuf);
 
 #endif
+

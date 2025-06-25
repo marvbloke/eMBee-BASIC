@@ -1,10 +1,15 @@
 #include <font.h>
+<<<<<<< HEAD
 #include <SSD1306ASCII.h>
 // ^ - modified for faster SPI
+=======
+#include <SSD1306ASCII.h> // faster driver for OLED display
+>>>>>>> parent of 4aede8a (Merge branch 'master' into eMBee-BASIC-2)
 #include <EEPROM.h>
 #include "basic.h"
 #include "host.h"
 #include <I2cMaster.h>
+<<<<<<< HEAD
 
 
 // Define in host.h if using an external EEPROM e.g. 24LC256
@@ -17,6 +22,8 @@
 
 // Instance of class for hardware master with pullups enabled
 // Used for CardKB keyboard and external EEPROM
+=======
+>>>>>>> parent of 4aede8a (Merge branch 'master' into eMBee-BASIC-2)
 TwiMaster rtc(true);
 
 // OLED
@@ -35,7 +42,11 @@ unsigned char mem[MEMORY_SIZE];
 #define TOKEN_BUF_SIZE    64
 unsigned char tokenBuf[TOKEN_BUF_SIZE];
 
+<<<<<<< HEAD
 const char welcomeStr[] PROGMEM = "eMBee BASIC v1.0";
+=======
+const char welcomeStr[] PROGMEM = "eMBee BASIC v2.0";
+>>>>>>> parent of 4aede8a (Merge branch 'master' into eMBee-BASIC-2)
 char autorun = 0;
 
 void setup() {
@@ -89,3 +100,7 @@ void loop() {
         host_outputProgMemString((char *)pgm_read_word(&(errorTable[ret])));
     }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 4aede8a (Merge branch 'master' into eMBee-BASIC-2)
