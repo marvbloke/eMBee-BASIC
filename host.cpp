@@ -2,6 +2,7 @@
 #include "basic.h"
 
 #include <SSD1306ASCII.h>
+#include <PS2Keyboard.h>
 #include <I2cMaster.h>
 #include <EEPROM.h>
 
@@ -19,6 +20,7 @@
 extern SSD1306ASCII oled;
 extern EEPROMClass EEPROM;
 extern TwiMaster rtc;
+
 
 int timer1_counter;
 
@@ -49,6 +51,8 @@ ISR(TIMER1_OVF_vect)        // interrupt service routine
     flash = !flash;
     redraw = 1;
 }
+
+
 
 char host_readKeyboard() {
     rtc.start((CARDKB_ADDR<<1) | I2C_WRITE);
@@ -305,7 +309,7 @@ char *host_readLine() {
     bool done = false;
     while (!done) {
         char c = host_readKeyboard();
-        while (c) {
+        while (c) {          
             host_click();
             // read the next key
             lineDirty[pos / SCREEN_WIDTH] = 1;
@@ -360,10 +364,10 @@ char host_getKey() {
 bool host_ESCPressed() {
     char c = host_readKeyboard();
     while (c) {
-        inkeyChar = c;
-        if (inkeyChar == CARDKB_ESC)
-            return true;
-        c = host_readKeyboard();
+      inkeyChar = c;
+      if (inkeyChar == CARDKB_ESC)
+        return true;
+      c = host_readKeyboard();
     }
     return false;
 }
@@ -509,3 +513,4 @@ bool host_saveExtEEPROM(char *fileName) {
     writeExtEEPROM(addr++, 0);
     return true;
 }
+
