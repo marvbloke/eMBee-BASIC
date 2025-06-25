@@ -1,9 +1,12 @@
 #include <font.h>
+
 #include <SSD1306ASCII.h> // faster driver for OLED display
+
 #include <EEPROM.h>
 #include "basic.h"
 #include "host.h"
 #include <I2cMaster.h>
+
 TwiMaster rtc(true);
 
 // OLED
@@ -23,6 +26,7 @@ unsigned char mem[MEMORY_SIZE];
 unsigned char tokenBuf[TOKEN_BUF_SIZE];
 
 const char welcomeStr[] PROGMEM = "eMBee BASIC v2.0";
+
 char autorun = 0;
 
 void setup() {
@@ -76,4 +80,3 @@ void loop() {
         host_outputProgMemString((char *)pgm_read_word(&(errorTable[ret])));
     }
 }
-
