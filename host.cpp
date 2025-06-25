@@ -72,7 +72,7 @@ void host_initUART() {
     // Set baud rate (adjust according to your needs)
     UBRR0H = (unsigned char)(MYUBRR >> 8);
     UBRR0L = (unsigned char)MYUBRR;
-
+ 
     // Enable receiver and transmitter
     UCSR0B |= (1<<RXEN0) | (1<<TXEN0);
 

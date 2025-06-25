@@ -1,6 +1,6 @@
 #ifndef _BASIC_H
 #define _BASIC_H
-
+ 
 #include <stdint.h>
 
 #define TOKEN_EOL		0
