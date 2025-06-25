@@ -1,30 +1,10 @@
 #include <font.h>
-#include <SSD1306ASCII.h>
-// ^ - modified for faster SPI
-#include <PS2Keyboard.h>
+#include <SSD1306ASCII.h> // faster driver for OLED display
 #include <EEPROM.h>
-
 #include "basic.h"
 #include "host.h"
-
-// Define in host.h if using an external EEPROM e.g. 24LC256
-// Should be connected to the I2C pins
-// SDA -> Analog Pin 4, SCL -> Analog Pin 5
-// See e.g. http://www.hobbytronics.co.uk/arduino-external-eeprom
-
-// If using an external EEPROM, you'll also have to initialise it by
-// running once with the appropriate lines enabled in setup() - see below
-
-#if EXTERNAL_EEPROM
 #include <I2cMaster.h>
-// Instance of class for hardware master with pullups enabled
 TwiMaster rtc(true);
-#endif
-
-// Keyboard
-const int DataPin = 8;
-const int IRQpin =  3;
-PS2Keyboard keyboard;
 
 // OLED
 #define OLED_DATA 9
@@ -34,8 +14,6 @@ PS2Keyboard keyboard;
 #define OLED_RST 13
 SSD1306ASCII oled(OLED_DATA, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
 
-// NB Keyboard needs a seperate ground from the OLED
-
 // buzzer pin, 0 = disabled/not present
 #define BUZZER_PIN    5
 
@@ -44,13 +22,11 @@ unsigned char mem[MEMORY_SIZE];
 #define TOKEN_BUF_SIZE    64
 unsigned char tokenBuf[TOKEN_BUF_SIZE];
 
-const char welcomeStr[] PROGMEM = "Arduino BASIC";
+const char welcomeStr[] PROGMEM = "eMBee BASIC v2.0";
 char autorun = 0;
 
 void setup() {
-    keyboard.begin(DataPin, IRQpin);
     oled.ssd1306_init(SSD1306_SWITCHCAPVCC);
-
     reset();
     host_init(BUZZER_PIN);
     host_cls();
@@ -59,12 +35,6 @@ void setup() {
     host_outputFreeMem(sysVARSTART - sysPROGEND);
     host_showBuffer();
     
-    // IF USING EXTERNAL EEPROM
-    // The following line 'wipes' the external EEPROM and prepares
-    // it for use. Uncomment it, upload the sketch, then comment it back
-    // in again and upload again, if you use a new EEPROM.
-    // writeExtEEPROM(0,0); writeExtEEPROM(1,0);
-
     if (EEPROM.read(0) == MAGIC_AUTORUN_NUMBER)
         autorun = 1;
     else

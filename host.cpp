@@ -2,12 +2,24 @@
 #include "basic.h"
 
 #include <SSD1306ASCII.h>
-#include <PS2Keyboard.h>
+#include <I2cMaster.h>
 #include <EEPROM.h>
 
+// CardKB keyboard
+#define CARDKB_ADDR 0x5F
+#define CARDKB_DELETE 0x08
+#define CARDKB_ENTER 0x0D
+#define CARDKB_ESC 0x1B
+
+// UART communication
+#define FOSC 16000000UL   // Clock Speed
+#define BAUD 300
+#define MYUBRR FOSC/16/BAUD-1
+
 extern SSD1306ASCII oled;
-extern PS2Keyboard keyboard;
 extern EEPROMClass EEPROM;
+extern TwiMaster rtc;
+
 int timer1_counter;
 
 char screenBuffer[SCREEN_WIDTH*SCREEN_HEIGHT];
@@ -39,12 +51,57 @@ ISR(TIMER1_OVF_vect)        // interrupt service routine
 }
 
 
+char host_readKeyboard() {
+    rtc.start((CARDKB_ADDR<<1) | I2C_WRITE);
+    rtc.write(1);
+    rtc.restart((CARDKB_ADDR<<1) | I2C_READ);
+    char c = rtc.read(true);
+    rtc.stop();
+    delay(5);
+    return c;
+}
+
+void host_initKeyboard() {
+    rtc.start((CARDKB_ADDR<<1) | I2C_WRITE);
+    rtc.write(1);
+    rtc.stop();
+    delay(1000);
+}
+
+void host_initUART() {
+    // Set baud rate (adjust according to your needs)
+    UBRR0H = (unsigned char)(MYUBRR >> 8);
+    UBRR0L = (unsigned char)MYUBRR;
+
+    // Enable receiver and transmitter
+    UCSR0B |= (1<<RXEN0) | (1<<TXEN0);
+
+    // Set frame format: 8 data bits, no parity, 1 stop bit
+    UCSR0C = (1<<UCSZ01) | (1<<UCSZ00);
+}
+
+void host_sendUART(char c) {
+    // Wait for empty transmit buffer
+    while (!(UCSR0A & (1<<UDRE0)));
+    UDR0 = c;
+    //delay(50);
+}
+
+char host_recvUART() {
+    // Wait for data to be received
+    if ((UCSR0A & (1<<RXC0)))
+        return UDR0;
+    else return 0;
+}
+
 void host_init(int buzzerPin) {
     buzPin = buzzerPin;
     oled.clear();
     if (buzPin)
         pinMode(buzPin, OUTPUT);
     initTimer();
+    host_initUART();
+    host_initKeyboard();
 }
 
 void host_sleep(long ms) {
@@ -231,16 +288,18 @@ char *host_readLine() {
 
     bool done = false;
     while (!done) {
-        while (keyboard.available()) {
+        char c = host_readKeyboard();
+        while (c) {
             host_click();
             // read the next key
             lineDirty[pos / SCREEN_WIDTH] = 1;
-            char c = keyboard.read();
-            if (c>=32 && c<=126)
+            if (c == CARDKB_ESC)
+                return -99;
+            if (c>=32 && c<=127)
                 screenBuffer[pos++] = c;
-            else if (c==PS2_DELETE && pos > startPos)
+            else if (c==CARDKB_DELETE && pos > startPos)
                 screenBuffer[--pos] = 0;
-            else if (c==PS2_ENTER)
+            else if (c==CARDKB_ENTER)
                 done = true;
             curX = pos % SCREEN_WIDTH;
             curY = pos / SCREEN_WIDTH;
@@ -259,6 +318,7 @@ char *host_readLine() {
                 }
             }
             redraw = 1;
+            c = host_readKeyboard();
         }
         if (redraw)
             host_showBuffer();
@@ -280,11 +340,12 @@ char host_getKey() {
 }
 
 bool host_ESCPressed() {
-    while (keyboard.available()) {
-        // read the next key
-        inkeyChar = keyboard.read();
-        if (inkeyChar == PS2_ESC)
+    char c = host_readKeyboard();
+    while (c) {
+        inkeyChar = c;
+        if (inkeyChar == CARDKB_ESC)
             return true;
+        c = host_readKeyboard();
     }
     return false;
 }
@@ -311,10 +372,6 @@ void host_loadProgram() {
     for (int i=0; i<sysPROGEND; i++)
         mem[i] = EEPROM.read(i+3);
 }
-
-#if EXTERNAL_EEPROM
-#include <I2cMaster.h>
-extern TwiMaster rtc;
 
 void writeExtEEPROM(unsigned int address, byte data) 
 {
@@ -430,5 +487,4 @@ bool host_saveExtEEPROM(char *fileName) {
     return true;
 }
 
-#endif
 
