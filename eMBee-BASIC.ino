@@ -1,22 +1,12 @@
 #include <font.h>
-#include <SSD1306ASCII.h>
-// ^ - modified for faster SPI
+
+#include <SSD1306ASCII.h> // faster driver for OLED display
+
 #include <EEPROM.h>
 #include "basic.h"
 #include "host.h"
 #include <I2cMaster.h>
 
-
-// Define in host.h if using an external EEPROM e.g. 24LC256
-// Should be connected to the I2C pins
-// SDA -> Analog Pin 4, SCL -> Analog Pin 5
-// See e.g. http://www.hobbytronics.co.uk/arduino-external-eeprom
-
-// If using an external EEPROM, you'll also have to initialise it by
-// running once with the appropriate lines enabled in setup() - see below
-
-// Instance of class for hardware master with pullups enabled
-// Used for CardKB keyboard and external EEPROM
 TwiMaster rtc(true);
 
 // OLED
@@ -35,7 +25,8 @@ unsigned char mem[MEMORY_SIZE];
 #define TOKEN_BUF_SIZE    64
 unsigned char tokenBuf[TOKEN_BUF_SIZE];
 
-const char welcomeStr[] PROGMEM = "eMBee BASIC v1.0";
+const char welcomeStr[] PROGMEM = "eMBee BASIC v2.0";
+
 char autorun = 0;
 
 void setup() {
